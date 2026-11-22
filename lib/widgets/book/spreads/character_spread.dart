@@ -109,18 +109,31 @@ class CharacterSpread extends StatelessWidget {
               height: 120,
               decoration: BoxDecoration(
                 shape: BoxShape.circle,
-                color: const Color(0xFFCFBE9B),
-                border: Border.all(color: const Color(0xFF7A5812), width: 1.5),
+                color: const Color(0xFF1E150E), // Obsidian / cast-iron circular coin plate
+                border: Border.all(color: const Color(0xFF8F7026), width: 2.2),
                 boxShadow: const [
                   BoxShadow(
-                    color: Color(0x18000000),
-                    blurRadius: 8,
-                    offset: Offset(0, 3),
+                    color: Color(0x35000000),
+                    blurRadius: 10,
+                    offset: Offset(0, 4),
                   ),
                 ],
               ),
-              child: const Center(
-                child: WitcherMedallion(size: 82, glowing: true),
+              child: Stack(
+                alignment: Alignment.center,
+                children: [
+                  Container(
+                    width: 106,
+                    height: 106,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      border: Border.all(color: const Color(0x55C59B3C), width: 1.0),
+                    ),
+                  ),
+                  const Center(
+                    child: WitcherMedallion(size: 82, glowing: true),
+                  ),
+                ],
               ),
             ),
           ],
@@ -263,7 +276,7 @@ class CharacterSpread extends StatelessWidget {
         Container(
           padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 10),
           decoration: BoxDecoration(
-            color: const Color(0xFFCFBE9B),
+            color: const Color(0xFFBAA982),
             borderRadius: BorderRadius.circular(3),
             border: Border(
               left: BorderSide(color: const Color(0xFF6B1914), width: 3.5),
@@ -346,7 +359,7 @@ class CharacterSpread extends StatelessWidget {
           Container(
             height: 7,
             decoration: BoxDecoration(
-              color: const Color(0xFFC4B28B),
+              color: const Color(0xFFB4A179),
               borderRadius: BorderRadius.circular(1.5),
               border: Border.all(color: const Color(0xFFA6936C), width: 0.8),
             ),
@@ -388,7 +401,7 @@ class _ParchmentSealBadge extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
       decoration: BoxDecoration(
-        color: const Color(0xFFCFBE9B),
+        color: const Color(0xFFBAA982),
         borderRadius: BorderRadius.circular(2),
         border: Border.all(color: color.withValues(alpha: 0.6), width: 1),
       ),
@@ -424,7 +437,7 @@ class _ManuscriptTag extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 7, vertical: 3),
       decoration: BoxDecoration(
-        color: const Color(0xFFCFBE9B),
+        color: const Color(0xFFBAA982),
         borderRadius: BorderRadius.circular(2),
         border: Border.all(color: signColor.withValues(alpha: 0.5), width: 1),
       ),

@@ -129,7 +129,7 @@ class _WitcherHudScaffoldState extends State<WitcherHudScaffold> {
         }
       },
       child: Scaffold(
-        backgroundColor: const Color(0xFFC7B38A),
+        backgroundColor: const Color(0xFFB5A27A),
         body: AnimatedSwitcher(
           duration: const Duration(milliseconds: 650),
           transitionBuilder: (child, animation) {

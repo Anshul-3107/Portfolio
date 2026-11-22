@@ -117,6 +117,17 @@ Rather than a generic modern developer portfolio, this project reconstructs an a
 
 ---
 
+### 4. [Contract: WeatherWise — AI Weather Intelligence & Climate Forecasting](https://github.com/Anshul-3107/WeatherWise)
+> **Threat Level: Atmospheric Anomaly & Severe Weather**  
+> **Armor Tier: Grandmaster** • *Status: Completed*
+
+* **The Hunt:** Forged a predictive climate intelligence application pairing real-time atmospheric telemetry with an in-house Random Forest Machine Learning pipeline trained on over 1,000,000+ historical records across 28 diverse climate zones.
+* **The Alchemy:** Trained Random Forest regression and classification pipelines on **1,013,304 historical climate records** to predict 24-hour temperature (**1.45°C MAE**) and rain likelihood (**84.70% accuracy**).
+* **The Armory:** Django REST Framework API with Open-Meteo & reverse geocoding, European AQI tracking, celestial solar/lunar astronomy, and a responsive cross-platform Flutter client with liquid micro-animations.
+* **Arsenal:** `Python` • `Django` • `Django REST Framework` • `Scikit-learn` • `Random Forest` • `Flutter` • `Dart` • `Open-Meteo`
+
+---
+
 ## 🔮 The 5 Witcher Signs & Alchemy Arsenal
 
 Skills are engraved as illuminated manuscript seals with high-contrast iron-gall and walnut inks:

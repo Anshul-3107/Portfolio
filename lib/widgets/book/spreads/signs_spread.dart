@@ -144,7 +144,7 @@ class _SignsSpreadState extends State<SignsSpread> {
               width: 38,
               height: 38,
               decoration: BoxDecoration(
-                color: const Color(0xFFCFBE9B),
+                color: const Color(0xFFBAA77F),
                 shape: BoxShape.circle,
                 border: Border.all(color: sign.signColor, width: 2),
                 boxShadow: [

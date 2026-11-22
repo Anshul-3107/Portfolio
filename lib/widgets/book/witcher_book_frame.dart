@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../../core/audio/witcher_audio.dart';
 import '../../core/constants/resume_data.dart';
 import '../../core/theme/witcher_colors.dart';
 import '../../core/theme/witcher_typography.dart';
@@ -46,10 +45,10 @@ class WitcherBookFrame extends StatelessWidget {
               begin: Alignment.topCenter,
               end: Alignment.bottomCenter,
               colors: [
-                Color(0xFFC4AF86), // Top edge antique dust & tanning
-                Color(0xFFD4C29B), // Upper dull vellum
-                Color(0xFFCEBC95), // Lower dull vellum
-                Color(0xFFBFA87E), // Bottom edge antique dust & tanning
+                Color(0xFFA8966E), // Top edge antique dust & tanning
+                Color(0xFFBCA981), // Upper dull vellum
+                Color(0xFFB29F77), // Lower dull vellum
+                Color(0xFF9E8B64), // Bottom edge antique dust & tanning
               ],
               stops: [0.0, 0.12, 0.88, 1.0],
             ),
@@ -122,13 +121,32 @@ class WitcherBookFrame extends StatelessWidget {
               cursor: SystemMouseCursors.click,
               child: GestureDetector(
                 onTap: () {
-                  WitcherAudio.click();
-                  onTabSelected(0);
+                  if (selectedIndex != 0) {
+                    onTabSelected(0);
+                  }
                 },
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
-                    const WitcherMedallion(size: 32, glowing: true),
+                    Container(
+                      width: 32,
+                      height: 32,
+                      decoration: BoxDecoration(
+                        shape: BoxShape.circle,
+                        color: const Color(0xFF1E150E),
+                        border: Border.all(color: const Color(0xFF8F7026), width: 1.5),
+                        boxShadow: const [
+                          BoxShadow(
+                            color: Color(0x30000000),
+                            blurRadius: 4,
+                            offset: Offset(0, 1),
+                          ),
+                        ],
+                      ),
+                      child: const Center(
+                        child: WitcherMedallion(size: 24, glowing: true),
+                      ),
+                    ),
                     const SizedBox(width: 10),
                     Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
@@ -276,13 +294,13 @@ class _ParchmentTabItemState extends State<_ParchmentTabItem> {
           ),
           decoration: BoxDecoration(
             color: active
-                ? const Color(0xFFBDAB82)
-                : (_isHovered ? const Color(0xFFCAB993) : Colors.transparent),
+                ? const Color(0xFFA5926A)
+                : (_isHovered ? const Color(0xFFB8A57D) : Colors.transparent),
             borderRadius: BorderRadius.circular(3),
             border: Border.all(
               color: active
                   ? const Color(0xFF6B1914)
-                  : (_isHovered ? const Color(0xFFA89168) : Colors.transparent),
+                  : (_isHovered ? const Color(0xFF8F7B54) : Colors.transparent),
               width: 1.2,
             ),
             boxShadow: active
@@ -372,10 +390,10 @@ class _ParchmentUtilityButtonState extends State<_ParchmentUtilityButton> {
             duration: const Duration(milliseconds: 180),
             padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
             decoration: BoxDecoration(
-              color: _isHovered ? const Color(0xFFBEAB83) : const Color(0xFFC7B58E),
+              color: _isHovered ? const Color(0xFFB29E76) : const Color(0xFFA8956E),
               borderRadius: BorderRadius.circular(3),
               border: Border.all(
-                color: _isHovered ? activeColor : const Color(0xFFA89168),
+                color: _isHovered ? activeColor : const Color(0xFF8F7B54),
                 width: 1,
               ),
               boxShadow: const [

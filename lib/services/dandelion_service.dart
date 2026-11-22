@@ -20,17 +20,21 @@ class ChatMessage {
 }
 
 class DandelionService {
-  // In development, talks to local Django at 127.0.0.1:8001 (to avoid conflict with other projects on 8000).
-  // In production, talks to your deployed cloud backend or falls back gracefully.
+  // In development, talks to local Django at 127.0.0.1:8001.
+  // In production, uses --dart-define=BACKEND_BASE_URL=https://... or defaults to deployed cloud URL.
   static String get backendBaseUrl {
+    const customUrl = String.fromEnvironment('BACKEND_BASE_URL');
+    if (customUrl.isNotEmpty) {
+      return customUrl;
+    }
     if (kIsWeb) {
       final host = Uri.base.host;
       if (host == 'localhost' || host == '127.0.0.1') {
         return 'http://127.0.0.1:8001';
       }
     }
-    // Replace with your deployed Render/Railway URL when deployed
-    return 'https://anshul-portfolio-backend.onrender.com';
+    // Replace with your deployed Railway URL when live
+    return 'https://portfolio-production-anshul.up.railway.app';
   }
 
   static String get backendApiUrl => '$backendBaseUrl/api/chat/';
@@ -91,6 +95,15 @@ class DandelionService {
       return "*Strums an energetic rhythm on the strings!*\n\n"
           "His ongoing opus: Contract InfraIntel! An autonomous cloud infrastructure intelligence platform "
           "engineered with FastAPI and Docker that predicts system outages and telemetry drifts before disaster strikes!";
+    } else if (msg.contains('weather') ||
+        msg.contains('weatherwise') ||
+        msg.contains('climate') ||
+        msg.contains('forecast') ||
+        msg.contains('rain')) {
+      return "*Sweeps a tempestuous arpeggio on the lute!*\n\n"
+          "Contract WeatherWise—mastery over sky and storm! Anshul trained Random Forest ML models across "
+          "1,000,000+ historical climate records to forecast temperatures within 1.45°C MAE and predict rainfall with 84.70% accuracy, "
+          "paired with a resilient Django REST backend and a sleek Flutter mobile client!";
     } else if (msg.contains('aws') ||
         msg.contains('cert') ||
         msg.contains('mutagen')) {

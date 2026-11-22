@@ -138,9 +138,9 @@ class _NoticeBoardSpreadState extends State<NoticeBoardSpread> {
         // The Folded Letter Container (3 horizontal folded panels with wax seal at bottom)
         Container(
           decoration: BoxDecoration(
-            color: const Color(0xFFCABA95),
+            color: const Color(0xFFBAA77F),
             borderRadius: BorderRadius.circular(3),
-            border: Border.all(color: const Color(0xFFC7B188), width: 1.2),
+            border: Border.all(color: const Color(0xFFA6936C), width: 1.2),
             boxShadow: const [
               BoxShadow(
                 color: Color(0x33000000),
@@ -359,7 +359,7 @@ class _NoticeBoardSpreadState extends State<NoticeBoardSpread> {
         Container(
           padding: const EdgeInsets.all(12),
           decoration: BoxDecoration(
-            color: const Color(0xFFCFBE9B),
+            color: const Color(0xFFBAA77F),
             borderRadius: BorderRadius.circular(3),
             border: Border.all(color: WitcherColors.inkGold, width: 1.2),
           ),
@@ -495,11 +495,11 @@ class _NoticeBoardSpreadState extends State<NoticeBoardSpread> {
           color: WitcherColors.inkMuted,
         ),
         filled: true,
-        fillColor: const Color(0xFFC7B58E),
+        fillColor: const Color(0xFFB2A078),
         contentPadding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
         enabledBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(2),
-          borderSide: const BorderSide(color: Color(0xFFC7B188), width: 0.8),
+          borderSide: const BorderSide(color: Color(0xFFA6936C), width: 0.8),
         ),
         focusedBorder: OutlineInputBorder(
           borderRadius: BorderRadius.circular(2),

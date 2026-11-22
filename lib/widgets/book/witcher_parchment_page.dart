@@ -231,7 +231,7 @@ class _PageTurnButtonState extends State<_PageTurnButton> {
   }
 }
 
-// Custom Painter for Dull Aged Weathering, Stains, Foxing & Deckled Edges
+// Custom Painter for Heavily Weathered, Worn-Out Parchment, Laid Paper Grain, Stains & Foxing
 class _WeatheredParchmentPainter extends CustomPainter {
   final bool isLeftPage;
   final bool isRightPage;
@@ -245,14 +245,29 @@ class _WeatheredParchmentPainter extends CustomPainter {
   void paint(Canvas canvas, Size size) {
     if (size.width <= 0 || size.height <= 0) return;
 
-    // 1. Organic Deckled Torn Border along outer margin (Dull sepia)
+    // 1. Antique Laid Paper Chain Lines (Handmade rag vellum texture)
+    final laidLinePaint = Paint()
+      ..color = const Color(0x0C382410)
+      ..strokeWidth = 0.75;
+    const laidSpacing = 22.0;
+    final totalLines = (size.height / laidSpacing).floor();
+    for (int i = 1; i <= totalLines; i++) {
+      final y = i * laidSpacing;
+      // Slight wave in handmade laid lines
+      final path = Path();
+      path.moveTo(0, y);
+      path.quadraticBezierTo(size.width * 0.5, y + math.sin(i * 0.8) * 0.8, size.width, y);
+      canvas.drawPath(path, laidLinePaint);
+    }
+
+    // 2. Heavy Deckled Torn Border along outer margin with frayed fibers
     final decklePaint = Paint()
-      ..color = const Color(0x45553E1F)
-      ..strokeWidth = 1.2
+      ..color = const Color(0x654D351A)
+      ..strokeWidth = 1.4
       ..style = PaintingStyle.stroke;
 
     final deckleFill = Paint()
-      ..color = const Color(0x224D351A)
+      ..color = const Color(0x33442C14)
       ..style = PaintingStyle.fill;
 
     if (isLeftPage) {
@@ -265,7 +280,7 @@ class _WeatheredParchmentPainter extends CustomPainter {
         isVertical: true,
         paint: decklePaint,
         fillPaint: deckleFill,
-        inwardOffset: 3,
+        inwardOffset: 3.5,
       );
     } else if (isRightPage) {
       _drawDeckledEdge(
@@ -277,11 +292,11 @@ class _WeatheredParchmentPainter extends CustomPainter {
         isVertical: true,
         paint: decklePaint,
         fillPaint: deckleFill,
-        inwardOffset: -3,
+        inwardOffset: -3.5,
       );
     }
 
-    // Top & Bottom deckled hairlines
+    // Top & Bottom deckled hairlines with aged oxidation
     _drawDeckledEdge(
       canvas: canvas,
       startX: 8,
@@ -291,7 +306,7 @@ class _WeatheredParchmentPainter extends CustomPainter {
       isVertical: false,
       paint: decklePaint,
       fillPaint: deckleFill,
-      inwardOffset: 2,
+      inwardOffset: 2.5,
     );
     _drawDeckledEdge(
       canvas: canvas,
@@ -302,74 +317,150 @@ class _WeatheredParchmentPainter extends CustomPainter {
       isVertical: false,
       paint: decklePaint,
       fillPaint: deckleFill,
-      inwardOffset: -2,
+      inwardOffset: -2.5,
     );
 
-    // 2. Antique Foxing Spots (Aged Oxidation Specks & Spots)
+    // 3. Antique Foxing Spots (Aged Oxidation Specks & Halo Rings)
     final foxingPaint = Paint()
-      ..color = const Color(0x263D2612)
+      ..color = const Color(0x383D240E)
       ..style = PaintingStyle.fill;
 
     final foxingRing = Paint()
-      ..color = const Color(0x2E321E0E)
+      ..color = const Color(0x32351E0A)
       ..style = PaintingStyle.stroke
-      ..strokeWidth = 0.8;
+      ..strokeWidth = 0.9;
 
-    // Deterministic spots
     final spots = isLeftPage
         ? const [
-            Offset(0.12, 0.18),
-            Offset(0.08, 0.45),
-            Offset(0.15, 0.72),
-            Offset(0.22, 0.88),
-            Offset(0.35, 0.08),
-            Offset(0.28, 0.32),
-            Offset(0.09, 0.62),
+            Offset(0.10, 0.14),
+            Offset(0.06, 0.32),
+            Offset(0.14, 0.52),
+            Offset(0.08, 0.70),
+            Offset(0.18, 0.86),
+            Offset(0.28, 0.06),
+            Offset(0.24, 0.28),
+            Offset(0.07, 0.44),
+            Offset(0.32, 0.65),
+            Offset(0.12, 0.92),
+            Offset(0.42, 0.18),
+            Offset(0.38, 0.82),
           ]
         : const [
-            Offset(0.88, 0.14),
-            Offset(0.92, 0.38),
-            Offset(0.84, 0.68),
-            Offset(0.78, 0.82),
-            Offset(0.65, 0.12),
-            Offset(0.72, 0.42),
-            Offset(0.90, 0.58),
+            Offset(0.90, 0.12),
+            Offset(0.94, 0.34),
+            Offset(0.86, 0.54),
+            Offset(0.92, 0.72),
+            Offset(0.82, 0.88),
+            Offset(0.72, 0.08),
+            Offset(0.76, 0.30),
+            Offset(0.93, 0.46),
+            Offset(0.68, 0.64),
+            Offset(0.88, 0.94),
+            Offset(0.58, 0.16),
+            Offset(0.62, 0.84),
           ];
 
     for (int i = 0; i < spots.length; i++) {
       final center = Offset(spots[i].dx * size.width, spots[i].dy * size.height);
-      final radius = 2.0 + (i % 3) * 1.8;
+      final radius = 1.8 + (i % 4) * 1.5;
       canvas.drawCircle(center, radius, foxingPaint);
       if (i % 2 == 0) {
-        canvas.drawCircle(center, radius + 1.2, foxingRing);
+        canvas.drawCircle(center, radius + 1.4, foxingRing);
       }
     }
 
-    // 3. Subtle Candle-Smoke / Library Dust Stain Organic Wash in corners
-    final stainPaint = Paint()
+    // 4. Candle-Smoke & Soot Stain Wash in Top Outer Corner
+    final sootPaint = Paint()
       ..shader = RadialGradient(
         colors: [
-          const Color(0x2435210F),
-          const Color(0x1235210F),
+          const Color(0x32321D0D),
+          const Color(0x18321D0D),
+          Colors.transparent,
+        ],
+        stops: const [0.0, 0.60, 1.0],
+      ).createShader(
+        Rect.fromCircle(
+          center: isLeftPage
+              ? Offset(size.width * 0.06, size.height * 0.10)
+              : Offset(size.width * 0.94, size.height * 0.10),
+          radius: 120,
+        ),
+      );
+    canvas.drawCircle(
+      isLeftPage
+          ? Offset(size.width * 0.06, size.height * 0.10)
+          : Offset(size.width * 0.94, size.height * 0.10),
+      120,
+      sootPaint,
+    );
+
+    // 5. Thumb & Page-Turning Grime Stain in Bottom Outer Corner
+    final thumbPaint = Paint()
+      ..shader = RadialGradient(
+        colors: [
+          const Color(0x3C38220F),
+          const Color(0x1C38220F),
+          Colors.transparent,
+        ],
+        stops: const [0.0, 0.65, 1.0],
+      ).createShader(
+        Rect.fromCircle(
+          center: isLeftPage
+              ? Offset(size.width * 0.08, size.height * 0.92)
+              : Offset(size.width * 0.92, size.height * 0.92),
+          radius: 135,
+        ),
+      );
+    canvas.drawCircle(
+      isLeftPage
+          ? Offset(size.width * 0.08, size.height * 0.92)
+          : Offset(size.width * 0.92, size.height * 0.92),
+      135,
+      thumbPaint,
+    );
+
+    // 6. Mid-Margin Tea-Stain Moisture Ring Bloom
+    final teaBloomPaint = Paint()
+      ..shader = RadialGradient(
+        colors: [
+          const Color(0x22422812),
+          const Color(0x10422812),
           Colors.transparent,
         ],
         stops: const [0.0, 0.55, 1.0],
       ).createShader(
         Rect.fromCircle(
           center: isLeftPage
-              ? Offset(size.width * 0.08, size.height * 0.15)
-              : Offset(size.width * 0.92, size.height * 0.85),
-          radius: 90,
+              ? Offset(size.width * 0.12, size.height * 0.58)
+              : Offset(size.width * 0.88, size.height * 0.58),
+          radius: 80,
         ),
       );
-
     canvas.drawCircle(
       isLeftPage
-          ? Offset(size.width * 0.08, size.height * 0.15)
-          : Offset(size.width * 0.92, size.height * 0.85),
-      90,
-      stainPaint,
+          ? Offset(size.width * 0.12, size.height * 0.58)
+          : Offset(size.width * 0.88, size.height * 0.58),
+      80,
+      teaBloomPaint,
     );
+
+    // 7. Faint Dog-Ear Handling Crease at Bottom Outer Corner
+    final creasePaint = Paint()
+      ..color = const Color(0x303E2612)
+      ..strokeWidth = 1.0;
+    if (isLeftPage) {
+      canvas.drawLine(
+        Offset(0, size.height - 40),
+        Offset(38, size.height),
+        creasePaint,
+      );
+    } else if (isRightPage) {
+      canvas.drawLine(
+        Offset(size.width, size.height - 40),
+        Offset(size.width - 38, size.height),
+        creasePaint,
+      );
+    }
   }
 
   void _drawDeckledEdge({
@@ -388,23 +479,23 @@ class _WeatheredParchmentPainter extends CustomPainter {
 
     if (isVertical) {
       final length = endY - startY;
-      const step = 8.0;
+      const step = 7.0;
       final count = (length / step).floor();
 
       for (int i = 1; i <= count; i++) {
         final y = startY + i * step;
-        final jag = math.sin(i * 1.7) * 1.4 + math.cos(i * 2.9) * 0.8;
+        final jag = math.sin(i * 1.8) * 1.8 + math.cos(i * 3.1) * 1.0;
         path.lineTo(startX + jag, y);
       }
       path.lineTo(endX, endY);
     } else {
       final length = endX - startX;
-      const step = 8.0;
+      const step = 7.0;
       final count = (length / step).floor();
 
       for (int i = 1; i <= count; i++) {
         final x = startX + i * step;
-        final jag = math.sin(i * 1.7) * 1.2 + math.cos(i * 2.9) * 0.6;
+        final jag = math.sin(i * 1.8) * 1.5 + math.cos(i * 3.1) * 0.8;
         path.lineTo(x, startY + jag);
       }
       path.lineTo(endX, endY);

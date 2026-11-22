@@ -103,7 +103,7 @@ class _LeetCodeTelemetryCardState extends State<LeetCodeTelemetryCard> {
         Container(
           padding: const EdgeInsets.all(8),
           decoration: BoxDecoration(
-            color: const Color(0xFFC7B58E),
+            color: const Color(0xFFB4A17A),
             border: Border.all(color: const Color(0xFF7A5812), width: 1.2),
             borderRadius: BorderRadius.circular(3),
           ),
@@ -194,7 +194,7 @@ class _LeetCodeTelemetryCardState extends State<LeetCodeTelemetryCard> {
             child: Container(
               padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
               decoration: BoxDecoration(
-                color: const Color(0xFFC7B68F),
+                color: const Color(0xFFB4A17A),
                 border: Border.all(color: const Color(0xFF7A5812), width: 1),
                 borderRadius: BorderRadius.circular(2),
               ),
@@ -229,7 +229,7 @@ class _LeetCodeTelemetryCardState extends State<LeetCodeTelemetryCard> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: const Color(0xFFC7B58E),
+        color: const Color(0xFFB4A17A),
         border: Border.all(color: const Color(0xFFA89168), width: 1),
         borderRadius: BorderRadius.circular(3),
       ),
@@ -406,7 +406,7 @@ class _LeetCodeTelemetryCardState extends State<LeetCodeTelemetryCard> {
         Container(
           height: 7,
           decoration: BoxDecoration(
-            color: const Color(0xFFC4B28B),
+            color: const Color(0xFFAFA076),
             borderRadius: BorderRadius.circular(2),
             border: Border.all(color: const Color(0xFFA6936C), width: 0.8),
           ),
@@ -493,7 +493,7 @@ class _LeetCodeTelemetryCardState extends State<LeetCodeTelemetryCard> {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
       decoration: BoxDecoration(
-        color: const Color(0xFFC7B58E),
+        color: const Color(0xFFB4A17A),
         border: Border.all(color: const Color(0xFFA89168), width: 1),
         borderRadius: BorderRadius.circular(2),
       ),

@@ -296,9 +296,9 @@ class _ContractsSpreadState extends State<ContractsSpread> {
             return Container(
               padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 3),
               decoration: BoxDecoration(
-                color: const Color(0xFFCFBE9B),
+                color: const Color(0xFFBAA982),
                 borderRadius: BorderRadius.circular(2),
-                border: Border.all(color: const Color(0xFFC7B38D), width: 1),
+                border: Border.all(color: const Color(0xFFA6936C), width: 1),
               ),
               child: Text(
                 tech,

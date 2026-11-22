@@ -190,7 +190,7 @@ class GlossarySpread extends StatelessWidget {
             margin: const EdgeInsets.only(bottom: 12),
             padding: const EdgeInsets.all(12),
             decoration: BoxDecoration(
-              color: const Color(0xFFCFBE9B),
+              color: const Color(0xFFBAA982),
               borderRadius: BorderRadius.circular(3),
               border: Border.all(color: const Color(0xFF7A5812), width: 1.2),
               boxShadow: const [
@@ -299,12 +299,6 @@ class GlossarySpread extends StatelessWidget {
               ),
               SizedBox(height: 8),
               _TrophyRow(
-                icon: Icons.code_rounded,
-                title: "LeetCode 122+ Problems Mastered",
-                desc: "Active algorithmic practitioner: Easy 52, Medium 68, Hard 2",
-              ),
-              SizedBox(height: 8),
-              _TrophyRow(
                 icon: Icons.hub_rounded,
                 title: "Full-Stack AI Architecture Master",
                 desc: "FraudLens & Leaf Compass production deployments",
@@ -327,9 +321,9 @@ class _EducationPill extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 2),
       decoration: BoxDecoration(
-        color: const Color(0xFFC7B58E),
+        color: const Color(0xFFB2A078),
         borderRadius: BorderRadius.circular(2),
-        border: Border.all(color: const Color(0xFFC7B188), width: 0.8),
+        border: Border.all(color: const Color(0xFFA6936C), width: 0.8),
       ),
       child: Text(
         label,

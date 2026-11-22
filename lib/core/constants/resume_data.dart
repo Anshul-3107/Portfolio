@@ -146,6 +146,40 @@ class ResumeData {
       ],
       githubUrl: "https://github.com/Anshul-3107/InfraIntel",
     ),
+    const ContractModel(
+      id: "weatherwise",
+      title: "Contract: WeatherWise",
+      subtitle: "AI Weather Intelligence & Climate Forecasting Platform",
+      threatLevel: "Atmospheric Anomaly & Severe Weather",
+      domain: "Predictive Meteorology & Cross-Platform Intelligence",
+      tier: ArmorTier.grandmaster,
+      status: ContractStatus.completed,
+      description:
+          "Forged a predictive climate intelligence application pairing real-time atmospheric telemetry with an in-house Random Forest Machine Learning pipeline trained on over 1,000,000+ historical records spanning 28 diverse climate zones.",
+      highlights: [
+        "Trained high-accuracy Random Forest regression and classification pipelines on 1,013,304 historical climate records to forecast 24-hour temperature (1.45°C MAE) and rain likelihood (84.70% accuracy).",
+        "Engineered robust Django REST Framework endpoints delivering atmospheric forecasts, live AQI metrics (PM2.5, PM10, NO2, O3), and celestial solar/lunar telemetry.",
+        "Crafted a responsive cross-platform Flutter client featuring adaptive themes, liquid micro-animations, and hyper-personalized lifestyle advisory alerts.",
+        "Engineered automated fallback heuristics ensuring uninterrupted offline performance under intermittent network connectivity.",
+      ],
+      combatMetrics: {
+        "Dataset Trained": "1,013,304 Records",
+        "Temp MAE": "1.45°C",
+        "Rain Accuracy": "84.70%",
+        "Architecture": "Django REST + Flutter",
+      },
+      techStack: [
+        "Python",
+        "Django",
+        "DRF",
+        "Scikit-learn",
+        "Random Forest",
+        "Flutter",
+        "Dart",
+        "Open-Meteo",
+      ],
+      githubUrl: "https://github.com/Anshul-3107/WeatherWise",
+    ),
   ];
 
   // Signs & Arsenal (Skills categorized by Witcher Signs)

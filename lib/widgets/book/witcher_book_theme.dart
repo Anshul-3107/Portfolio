@@ -14,12 +14,12 @@ class WitcherBookTheme {
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
           colors: [
-            Color(0xFFC2AF87), // Dry, oxidized, aged left outer edge
-            Color(0xFFCCA978), // Natural outer margin roll
-            Color(0xFFDCCEA7), // Matte vellum belly (dull, non-luminous)
-            Color(0xFFD4C39C), // Page slope
-            Color(0xFFC8B58D), // Curvature down toward center spine
-            Color(0xFFB59F74), // Gutter shadow lead-in
+            Color(0xFFAFA076), // Heavily aged, oxidized, dry left outer edge
+            Color(0xFFBBAA81), // Natural outer margin handling roll
+            Color(0xFFC8B78F), // Matte vellum belly (dull, desaturated, aged)
+            Color(0xFFBEAC84), // Weathered page slope
+            Color(0xFFB09E77), // Curvature down toward center spine
+            Color(0xFF9C8963), // Deep gutter shadow lead-in & cleft grime
           ],
           stops: [0.0, 0.06, 0.38, 0.76, 0.94, 1.0],
         ),
@@ -30,12 +30,12 @@ class WitcherBookTheme {
           begin: Alignment.centerLeft,
           end: Alignment.centerRight,
           colors: [
-            Color(0xFFB59F74), // Gutter shadow emergence
-            Color(0xFFC8B58D), // Curvature rise from spine
-            Color(0xFFD4C39C), // Page slope
-            Color(0xFFDCCEA7), // Matte vellum belly (dull, non-luminous)
-            Color(0xFFCCA978), // Natural outer margin roll
-            Color(0xFFC2AF87), // Dry, oxidized, aged right outer edge
+            Color(0xFF9C8963), // Deep gutter shadow emergence & cleft grime
+            Color(0xFFB09E77), // Curvature rise from spine
+            Color(0xFFBEAC84), // Weathered page slope
+            Color(0xFFC8B78F), // Matte vellum belly (dull, desaturated, aged)
+            Color(0xFFBBAA81), // Natural outer margin handling roll
+            Color(0xFFAFA076), // Heavily aged, oxidized, dry right outer edge
           ],
           stops: [0.0, 0.06, 0.24, 0.62, 0.94, 1.0],
         ),
@@ -48,10 +48,10 @@ class WitcherBookTheme {
         begin: Alignment.topCenter,
         end: Alignment.bottomCenter,
         colors: [
-          Color(0xFFC7B38A),
-          Color(0xFFDCCEA7),
-          Color(0xFFD5C49D),
-          Color(0xFFC2AF87),
+          Color(0xFFB5A47C),
+          Color(0xFFC8B78F),
+          Color(0xFFBEAC84),
+          Color(0xFFAFA076),
         ],
         stops: [0.0, 0.12, 0.88, 1.0],
       ),
@@ -66,12 +66,12 @@ class WitcherBookTheme {
   }) {
     final borderColor = isSelected
         ? const Color(0xFF6B1914) // Faded iron-gall crimson
-        : (isHovered ? const Color(0xFF8A6A24) : const Color(0xFFA8936D));
+        : (isHovered ? const Color(0xFF755B20) : const Color(0xFF94805A));
 
     return BoxDecoration(
       color: isSelected
-          ? const Color(0xFFC2AF87)
-          : (isHovered ? const Color(0xFFD8C9A6) : const Color(0xFFCFBE9B)),
+          ? const Color(0xFFAFA078)
+          : (isHovered ? const Color(0xFFC4B38D) : const Color(0xFFBBA982)),
       borderRadius: BorderRadius.circular(3),
       border: Border.all(
         color: borderColor,
@@ -79,7 +79,7 @@ class WitcherBookTheme {
       ),
       boxShadow: [
         BoxShadow(
-          color: const Color(0x2225180A),
+          color: const Color(0x2825180A),
           blurRadius: isHovered ? 5 : 2.5,
           offset: Offset(0, isHovered ? 2 : 1),
         ),
@@ -92,15 +92,15 @@ class WitcherBookTheme {
     bool isHovered = false,
   }) {
     return BoxDecoration(
-      color: const Color(0xFFCFBE9B),
+      color: const Color(0xFFB8A67F),
       borderRadius: BorderRadius.circular(4),
       border: Border.all(
-        color: isHovered ? const Color(0xFF8A6A24) : const Color(0xFFA8926C),
+        color: isHovered ? const Color(0xFF755B20) : const Color(0xFF8C7752),
         width: 1.2,
       ),
       boxShadow: const [
         BoxShadow(
-          color: Color(0x2825180A),
+          color: Color(0x2E25180A),
           blurRadius: 4,
           offset: Offset(0, 1.5),
         ),

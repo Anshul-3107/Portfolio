@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <base href="/">
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <meta name="description" content="Anshul of AI — Grandmaster Witcher of the Neural School. Portfolio of Anshul Arohi, AI/ML Engineer & Systems Developer.">
+  <meta name="theme-color" content="#0d0e11">
+
+  <!-- Open Graph -->
+  <meta property="og:title" content="Anshul of AI | Grandmaster Witcher Portfolio">
+  <meta property="og:description" content="AI/ML Engineer, Python Developer, AWS Certified Machine Learning Engineer. Explore contracts, neural signs, and lore.">
+  <meta property="og:type" content="website">
+
+  <!-- Fonts Preconnect -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cinzel+Decorative:wght@700;900&family=Cinzel:wght@500;600;700;800&family=Marcellus&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+
+  <title>Anshul of AI • Grandmaster Witcher Portfolio</title>
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <style>
+    body {
+      background-color: #0d0e11;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      font-family: 'Cinzel', serif;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    #loading-container {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background: radial-gradient(circle at center, #1b1c22 0%, #0d0e11 75%);
+      z-index: 9999;
+      transition: opacity 0.8s ease-out;
+    }
+
+    .medallion-pulse {
+      width: 72px;
+      height: 72px;
+      position: relative;
+      margin-bottom: 24px;
+      animation: pulseGlow 2.5s infinite ease-in-out;
+    }
+
+    .witcher-logo-title {
+      color: #c5a059;
+      font-size: 20px;
+      letter-spacing: 4px;
+      text-transform: uppercase;
+      font-weight: 700;
+      text-shadow: 0 0 12px rgba(197, 160, 89, 0.4);
+      margin-bottom: 8px;
+    }
+
+    .witcher-logo-subtitle {
+      color: #8c887b;
+      font-size: 11px;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+    }
+
+    .load-bar {
+      width: 180px;
+      height: 2px;
+      background: rgba(197, 160, 89, 0.2);
+      margin-top: 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .load-progress {
+      position: absolute;
+      top: 0;
+      left: 0;
+      height: 100%;
+      width: 40%;
+      background: linear-gradient(90deg, transparent, #c5a059, transparent);
+      animation: shimmer 1.8s infinite;
+    }
+
+    @keyframes pulseGlow {
+      0%, 100% { transform: scale(1); filter: drop-shadow(0 0 8px rgba(197, 160, 89, 0.3)); }
+      50% { transform: scale(1.05); filter: drop-shadow(0 0 20px rgba(197, 160, 89, 0.7)); }
+    }
+
+    @keyframes shimmer {
+      0% { left: -40%; }
+      100% { left: 100%; }
+    }
+  </style>
+
+  <!-- Self-contained Web Audio Synthesizer for Witcher Sound Effects -->
+  <script>
+    (function() {
+      let audioCtx = null;
+      let soundEnabled = true;
+      let ambientAudio = null;
+      let currentTrackIndex = 0;
+      const ambientTracks = [
+        'assets/audio/kaer_morhen.mp3',
+        'assets/audio/ard_skellig.mp3'
+      ];
+
+      function getAudioContext() {
+        if (!audioCtx) {
+          const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+          if (AudioContextClass) {
+            audioCtx = new AudioContextClass();
+          }
+        }
+        if (audioCtx && audioCtx.state === 'suspended') {
+          audioCtx.resume();
+        }
+        return audioCtx;
+      }
+
+      function fadeVolume(audio, targetVolume, durationMs) {
+        if (!audio) return;
+        const initialVolume = audio.volume;
+        const stepTime = 50;
+        const steps = Math.max(1, durationMs / stepTime);
+        const volumeStep = (targetVolume - initialVolume) / steps;
+        let currentStep = 0;
+
+        const interval = setInterval(() => {
+          currentStep++;
+          let newVol = audio.volume + volumeStep;
+          if ((volumeStep > 0 && newVol >= targetVolume) || (volumeStep < 0 && newVol <= targetVolume) || currentStep >= steps) {
+            audio.volume = Math.max(0, Math.min(1, targetVolume));
+            clearInterval(interval);
+          } else {
+            audio.volume = Math.max(0, Math.min(1, newVol));
+          }
+        }, stepTime);
+      }
+
+      window.startWitcherAmbientMusic = function() {
+        if (!soundEnabled) return;
+        if (!ambientAudio) {
+          ambientAudio = new Audio(ambientTracks[currentTrackIndex]);
+          ambientAudio.loop = false;
+          ambientAudio.volume = 0.0;
+
+          ambientAudio.addEventListener('ended', function() {
+            currentTrackIndex = (currentTrackIndex + 1) % ambientTracks.length;
+            ambientAudio.src = ambientTracks[currentTrackIndex];
+            ambientAudio.volume = 0.0;
+            if (soundEnabled) {
+              ambientAudio.play().then(() => {
+                fadeVolume(ambientAudio, 0.045, 2500);
+              }).catch(() => {});
+            }
+          });
+        }
+
+        ambientAudio.play().then(() => {
+          fadeVolume(ambientAudio, 0.045, 2500);
+        }).catch(() => {});
+      };
+
+      window.pauseWitcherAmbientMusic = function() {
+        if (ambientAudio) {
+          fadeVolume(ambientAudio, 0.0, 700);
+          setTimeout(() => {
+            if (ambientAudio && !soundEnabled) ambientAudio.pause();
+          }, 750);
+        }
+      };
+
+      window.resumeWitcherAmbientMusic = function() {
+        if (!soundEnabled) return;
+        if (ambientAudio) {
+          ambientAudio.play().then(() => {
+            fadeVolume(ambientAudio, 0.045, 1500);
+          }).catch(() => {});
+        } else {
+          window.startWitcherAmbientMusic();
+        }
+      };
+
+      window.setWitcherAudioEnabled = function(enabled) {
+        soundEnabled = !!enabled;
+        if (soundEnabled) {
+          window.resumeWitcherAmbientMusic();
+        } else {
+          window.pauseWitcherAmbientMusic();
+        }
+      };
+
+      window.isWitcherAudioEnabled = function() {
+        return soundEnabled;
+      };
+
+      window.playWitcherAudio = function(type) {
+        if (!soundEnabled) return;
+        try {
+          const ctx = getAudioContext();
+          if (!ctx) return;
+          const now = ctx.currentTime;
+
+          // Only page turning sound plays when switching tabs/chapters
+          if (type === 'tab' || type === 'page_flip' || type === 'page_riffle') {
+            // Soft, gentle antique parchment page turn rustle
+            try {
+              const bufferSize = Math.floor(ctx.sampleRate * 0.32);
+              const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+              const data = buffer.getChannelData(0);
+              for (let i = 0; i < bufferSize; i++) {
+                data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+              }
+              const noise = ctx.createBufferSource();
+              noise.buffer = buffer;
+
+              const filter = ctx.createBiquadFilter();
+              filter.type = 'bandpass';
+              filter.frequency.setValueAtTime(600, now);
+              filter.frequency.exponentialRampToValueAtTime(1400, now + 0.1);
+              filter.frequency.exponentialRampToValueAtTime(380, now + 0.28);
+              filter.Q.setValueAtTime(1.5, now);
+
+              const gain = ctx.createGain();
+              gain.gain.setValueAtTime(0.001, now);
+              gain.gain.linearRampToValueAtTime(0.08, now + 0.05);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.30);
+
+              noise.connect(filter);
+              filter.connect(gain);
+              gain.connect(ctx.destination);
+
+              noise.start(now);
+              noise.stop(now + 0.32);
+
+              // Low air displacement of heavy parchment leaf
+              const sub = ctx.createOscillator();
+              const subGain = ctx.createGain();
+              sub.type = 'sine';
+              sub.frequency.setValueAtTime(85, now);
+              sub.frequency.exponentialRampToValueAtTime(32, now + 0.24);
+              subGain.gain.setValueAtTime(0.045, now);
+              subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+              sub.connect(subGain);
+              subGain.connect(ctx.destination);
+              sub.start(now);
+              sub.stop(now + 0.24);
+            } catch (_) {}
+          } else if (type === 'sword') {
+            // Metallic blade unsheathe draw sound (only for title screen entry)
+            try {
+              const osc = ctx.createOscillator();
+              const gain = ctx.createGain();
+
+              osc.type = 'sawtooth';
+              osc.frequency.setValueAtTime(1200, now);
+              osc.frequency.exponentialRampToValueAtTime(2600, now + 0.08);
+              osc.frequency.exponentialRampToValueAtTime(700, now + 0.5);
+
+              gain.gain.setValueAtTime(0.008, now);
+              gain.gain.linearRampToValueAtTime(0.075, now + 0.04);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
+
+              const filter = ctx.createBiquadFilter();
+              filter.type = 'bandpass';
+              filter.frequency.setValueAtTime(2200, now);
+              filter.Q.setValueAtTime(3.5, now);
+
+              osc.connect(filter);
+              filter.connect(gain);
+              gain.connect(ctx.destination);
+
+              osc.start(now);
+              osc.stop(now + 0.6);
+
+              // Sub bass resonance of heavy scabbard draw
+              const subOsc = ctx.createOscillator();
+              const subGain = ctx.createGain();
+              subOsc.type = 'sine';
+              subOsc.frequency.setValueAtTime(140, now);
+              subOsc.frequency.exponentialRampToValueAtTime(45, now + 0.45);
+
+              subGain.gain.setValueAtTime(0.12, now);
+              subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
+
+              subOsc.connect(subGain);
+              subGain.connect(ctx.destination);
+
+              subOsc.start(now);
+              subOsc.stop(now + 0.45);
+            } catch (_) {}
+          }
+          // All other clicks, taps, hovers, or buttons are completely silent
+        } catch (e) {
+          // Audio autoplay block or unsupported - gracefully continue
+        }
+      };
+
+      window.downloadWitcherResume = function() {
+        function triggerDownload(url, filename) {
+          try {
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            a.target = '_blank';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          } catch (e) {
+            window.open(url, '_blank');
+          }
+        }
+
+        // 1. Download Resume
+        triggerDownload('Anshul_Arohi_Resume.pdf', 'Anshul_Arohi_Resume.pdf');
+
+        // 2. Download AWS Certified ML Engineer Certificate
+        setTimeout(function() {
+          triggerDownload('AWS_Certified_Machine_Learning_Engineer_Associate.pdf', 'AWS_Certified_Machine_Learning_Engineer_Associate.pdf');
+        }, 220);
+      };
+
+      window.toggleWitcherFullscreen = function() {
+        if (!document.fullscreenElement) {
+          if (document.documentElement.requestFullscreen) {
+            document.documentElement.requestFullscreen().catch(() => {});
+          } else if (document.documentElement.webkitRequestFullscreen) {
+            document.documentElement.webkitRequestFullscreen();
+          }
+          return true;
+        } else {
+          if (document.exitFullscreen) {
+            document.exitFullscreen().catch(() => {});
+          } else if (document.webkitExitFullscreen) {
+            document.webkitExitFullscreen();
+          }
+          return false;
+        }
+      };
+
+      window.isWitcherFullscreen = function() {
+        return !!(document.fullscreenElement || document.webkitFullscreenElement);
+      };
+
+      window.hideWitcherLoader = function() {
+        const loader = document.getElementById('loading-container');
+        if (loader) {
+          loader.style.opacity = '0';
+          setTimeout(() => {
+            loader.style.display = 'none';
+          }, 800);
+        }
+      };
+    })();
+  </script>
+</head>
+<body>
+  <div id="loading-container">
+    <svg class="medallion-pulse" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+      <!-- Witcher Wolf Medallion stylized vector -->
+      <polygon points="50,5 65,30 85,25 75,50 90,65 70,75 50,95 30,75 10,65 25,50 15,25 35,30" stroke="#c5a059" stroke-width="2.5" fill="rgba(197, 160, 89, 0.1)"/>
+      <polygon points="50,22 60,38 72,45 62,60 50,78 38,60 28,45 40,38" stroke="#c5a059" stroke-width="1.8" fill="rgba(13, 14, 17, 0.9)"/>
+      <circle cx="42" cy="48" r="3" fill="#e5b869"/>
+      <circle cx="58" cy="48" r="3" fill="#e5b869"/>
+      <polygon points="50,52 46,62 54,62" fill="#c5a059"/>
+    </svg>
+    <div class="witcher-logo-title">ANSHUL OF AI</div>
+    <div class="witcher-logo-subtitle">Grandmaster of the Neural School</div>
+    <div class="load-bar">
+      <div class="load-progress"></div>
+    </div>
+  </div>
+
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>

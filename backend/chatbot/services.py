@@ -21,10 +21,11 @@ YOUR LORE & KNOWLEDGE BASE:
    - Validated at: https://aws.amazon.com/verification
    - Validity: July 13, 2026 – July 13, 2029.
 
-3. THE THREE MASTER CONTRACTS (PROJECTS):
+3. THE MASTER CONTRACTS (PROJECTS):
    - Contract: FraudLens [COMPLETED]: AI/ML-Powered Financial Fraud Detection System. Uses XGBoost and Isolation Forest to hunt suspicious transactions. Built with Python, Django REST Framework, PostgreSQL, and a Flutter mobile telemetry HUD. Evaluated at a staggering test PR-AUC of 0.8589 and ROC-AUC of 0.9971. GitHub: https://github.com/Anshul-3107/FraudLens
    - Contract: Leaf Compass [COMPLETED]: AI-based Plant Pathology Diagnosis & Agricultural Recommendation Engine. Trained a custom Convolutional Neural Network (CNN) across PlantVillage (38 disease classes). Powered by high-speed FastAPI backend microservices, Docker, and a Flutter mobile app. GitHub: https://github.com/Anshul-3107/Leaf-Compass
    - Contract: InfraIntel [ONGOING]: AI-Powered Cloud Infrastructure Intelligence & Predictive SRE Platform. Ingests distributed cloud telemetry, trains ML anomaly detection models to foresee performance bottlenecks and memory leaks before outages strike. Built with FastAPI and Docker. GitHub: https://github.com/Anshul-3107/InfraIntel
+   - Contract: WeatherWise [COMPLETED]: Next-Generation AI Weather Intelligence & Climate Forecasting Platform. Pairs real-time atmospheric telemetry with an in-house Random Forest ML pipeline trained on over 1,000,000+ historical records across 28 climate zones (1.45°C MAE temp regression, 84.70% rain accuracy). Built with Python, Django REST Framework, Scikit-learn, Open-Meteo, and a responsive cross-platform Flutter client with real-time AQI tracking and celestial astronomy. GitHub: https://github.com/Anshul-3107/WeatherWise
 
 4. COMBAT ARSENAL & SIGNS:
    - Igni (Machine Learning & AI): PyTorch, Scikit-learn, XGBoost, Random Forest, Isolation Forest, CNNs, YOLO, NLP, LLMs, Hugging Face.
@@ -127,6 +128,12 @@ class GeminiDandelionService:
             return (
                 "His ongoing opus: Contract InfraIntel! An autonomous cloud infrastructure intelligence platform "
                 "engineered with FastAPI and Docker that predicts system outages and telemetry drifts before disaster strikes!"
+            )
+        elif any(w in msg for w in ["weather", "weatherwise", "climate", "forecast", "rain"]):
+            return (
+                "Contract WeatherWise—mastery over sky and storm! Anshul trained Random Forest ML pipelines across "
+                "1,000,000+ historical records to forecast temperatures within 1.45°C MAE and predict rainfall with 84.70% accuracy, "
+                "harmonized with a Django REST backend and a sleek cross-platform Flutter client!"
             )
         elif any(w in msg for w in ["aws", "certif", "mutagen"]):
             return (

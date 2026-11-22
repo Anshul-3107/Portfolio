@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../core/theme/witcher_colors.dart';
 
 class WitcherMedallion extends StatefulWidget {
   final double size;
@@ -56,7 +55,7 @@ class _WitcherMedallionState extends State<WitcherMedallion>
 
   @override
   Widget build(BuildContext context) {
-    final medallionColor = widget.color ?? WitcherColors.gold;
+    final medallionColor = widget.color ?? const Color(0xFFC59B3C);
 
     return AnimatedBuilder(
       animation: _pulseAnimation,
@@ -64,8 +63,8 @@ class _WitcherMedallionState extends State<WitcherMedallion>
         final glowFactor = widget.glowing ? _pulseAnimation.value : 0.0;
         final auraRadius = widget.size * (0.35 + glowFactor * 0.18);
         final eyeColor = Color.lerp(
-          WitcherColors.goldBright,
-          WitcherColors.crimsonBright,
+          const Color(0xFFE5251A),
+          const Color(0xFFFF4D4D),
           glowFactor,
         )!;
 
@@ -77,9 +76,9 @@ class _WitcherMedallionState extends State<WitcherMedallion>
                   shape: BoxShape.circle,
                   boxShadow: [
                     BoxShadow(
-                      color: medallionColor.withValues(alpha: 0.22 + glowFactor * 0.22),
+                      color: const Color(0xFFFF2211).withValues(alpha: 0.16 + glowFactor * 0.20),
                       blurRadius: auraRadius,
-                      spreadRadius: widget.size * 0.04,
+                      spreadRadius: widget.size * 0.02,
                     ),
                   ],
                 )
@@ -105,7 +104,7 @@ class _WitcherWolfPainter extends CustomPainter {
 
   _WitcherWolfPainter({
     required this.color,
-    this.eyeColor = WitcherColors.goldBright,
+    this.eyeColor = const Color(0xFFE5251A),
     this.glowIntensity = 0.0,
   });
 
@@ -114,24 +113,39 @@ class _WitcherWolfPainter extends CustomPainter {
     final w = size.width;
     final h = size.height;
 
+    // 1. Subtle drop shadow behind the metal wolf head
+    final shadowPaint = Paint()
+      ..color = const Color(0x66000000)
+      ..maskFilter = MaskFilter.blur(BlurStyle.normal, w * 0.06);
+
+    // 2. Solid dark antique steel/iron body fill
+    final bodyPaint = Paint()
+      ..shader = LinearGradient(
+        begin: Alignment.topCenter,
+        end: Alignment.bottomCenter,
+        colors: const [
+          Color(0xFF2E2117), // Dark forged iron
+          Color(0xFF1E140D), // Shadowed steel
+          Color(0xFF150D07), // Deep abyss
+        ],
+        stops: const [0.0, 0.6, 1.0],
+      ).createShader(Rect.fromLTWH(0, 0, w, h))
+      ..style = PaintingStyle.fill;
+
+    // 3. Crisp metallic edge stroke (Dark bronze & antique gold)
     final strokePaint = Paint()
-      ..color = color
-      ..strokeWidth = w * 0.04
+      ..color = color // Rich antique gold
+      ..strokeWidth = w * 0.045
       ..style = PaintingStyle.stroke
       ..strokeCap = StrokeCap.round
       ..strokeJoin = StrokeJoin.round;
 
-    final fillPaint = Paint()
-      ..color = color.withValues(alpha: 0.15)
-      ..style = PaintingStyle.fill;
-
-    final eyePaint = Paint()
-      ..color = eyeColor
-      ..style = PaintingStyle.fill;
-
-    final accentPaint = Paint()
-      ..color = WitcherColors.goldBright
-      ..style = PaintingStyle.fill;
+    final outerTrimStroke = Paint()
+      ..color = const Color(0xFF382310) // Dark walnut contour base
+      ..strokeWidth = w * 0.075
+      ..style = PaintingStyle.stroke
+      ..strokeCap = StrokeCap.round
+      ..strokeJoin = StrokeJoin.round;
 
     // Outer silhouette of Wolf Head
     final outerPath = Path();
@@ -149,8 +163,38 @@ class _WitcherWolfPainter extends CustomPainter {
     outerPath.lineTo(w * 0.35, h * 0.28); // left ear peak
     outerPath.close();
 
-    canvas.drawPath(outerPath, fillPaint);
+    // Draw shadow first
+    canvas.drawPath(outerPath, shadowPaint);
+
+    // Draw outer dark contour trim (ensures crisp separation from parchment)
+    canvas.drawPath(outerPath, outerTrimStroke);
+
+    // Draw solid metal body
+    canvas.drawPath(outerPath, bodyPaint);
+
+    // Draw crisp gold border
     canvas.drawPath(outerPath, strokePaint);
+
+    // 4. Inner facial facets (sculpted 3D angular snout and brow planes)
+    final leftCheekFacet = Path();
+    leftCheekFacet.moveTo(w * 0.35, h * 0.28);
+    leftCheekFacet.lineTo(w * 0.40, h * 0.38);
+    leftCheekFacet.lineTo(w * 0.28, h * 0.46);
+    leftCheekFacet.lineTo(w * 0.26, h * 0.48);
+    leftCheekFacet.close();
+
+    final rightCheekFacet = Path();
+    rightCheekFacet.moveTo(w * 0.65, h * 0.28);
+    rightCheekFacet.lineTo(w * 0.60, h * 0.38);
+    rightCheekFacet.lineTo(w * 0.72, h * 0.46);
+    rightCheekFacet.lineTo(w * 0.74, h * 0.48);
+    rightCheekFacet.close();
+
+    final facetPaint = Paint()
+      ..color = const Color(0xFF3D2C1E)
+      ..style = PaintingStyle.fill;
+    canvas.drawPath(leftCheekFacet, facetPaint);
+    canvas.drawPath(rightCheekFacet, facetPaint);
 
     // Inner facial planes (angular snout and brow)
     final innerPath = Path();
@@ -164,44 +208,76 @@ class _WitcherWolfPainter extends CustomPainter {
     innerPath.lineTo(w * 0.40, h * 0.38);
     innerPath.close();
 
+    final innerFill = Paint()
+      ..color = const Color(0xFF261A11)
+      ..style = PaintingStyle.fill;
+    canvas.drawPath(innerPath, innerFill);
+
     final innerStroke = Paint()
-      ..color = color.withValues(alpha: 0.8)
-      ..strokeWidth = w * 0.03
+      ..color = color.withValues(alpha: 0.9)
+      ..strokeWidth = w * 0.028
       ..style = PaintingStyle.stroke;
     canvas.drawPath(innerPath, innerStroke);
 
-    // Angular Glowing Eyes
+    // 5. Angular Glowing Eyes (Fierce Witcher Wolf Ruby Gaze)
     final leftEye = Path();
-    leftEye.moveTo(w * 0.38, h * 0.46);
-    leftEye.lineTo(w * 0.45, h * 0.47);
+    leftEye.moveTo(w * 0.38, h * 0.45);
+    leftEye.lineTo(w * 0.46, h * 0.46);
     leftEye.lineTo(w * 0.40, h * 0.52);
     leftEye.close();
 
     final rightEye = Path();
-    rightEye.moveTo(w * 0.62, h * 0.46);
-    rightEye.lineTo(w * 0.55, h * 0.47);
+    rightEye.moveTo(w * 0.62, h * 0.45);
+    rightEye.lineTo(w * 0.54, h * 0.46);
     rightEye.lineTo(w * 0.60, h * 0.52);
     rightEye.close();
 
     // Eye glow halo if pulsating
     if (glowIntensity > 0) {
       final glowPaint = Paint()
-        ..color = eyeColor.withValues(alpha: 0.4 + glowIntensity * 0.4)
-        ..maskFilter = MaskFilter.blur(BlurStyle.normal, w * 0.08);
+        ..color = const Color(0xFFFF2211).withValues(alpha: 0.5 + glowIntensity * 0.4)
+        ..maskFilter = MaskFilter.blur(BlurStyle.normal, w * 0.10);
       canvas.drawPath(leftEye, glowPaint);
       canvas.drawPath(rightEye, glowPaint);
     }
 
+    final eyePaint = Paint()
+      ..color = eyeColor
+      ..style = PaintingStyle.fill;
+
     canvas.drawPath(leftEye, eyePaint);
     canvas.drawPath(rightEye, eyePaint);
 
-    // Central Nose Rune
+    // 6. Central Nose Rune & Snout Fangs
     final noseRune = Path();
-    noseRune.moveTo(w * 0.50, h * 0.56);
-    noseRune.lineTo(w * 0.46, h * 0.68);
-    noseRune.lineTo(w * 0.54, h * 0.68);
+    noseRune.moveTo(w * 0.50, h * 0.54);
+    noseRune.lineTo(w * 0.45, h * 0.67);
+    noseRune.lineTo(w * 0.55, h * 0.67);
     noseRune.close();
+
+    final accentPaint = Paint()
+      ..color = const Color(0xFFE5B869)
+      ..style = PaintingStyle.fill;
     canvas.drawPath(noseRune, accentPaint);
+
+    // Menacing fangs at the muzzle
+    final leftFang = Path();
+    leftFang.moveTo(w * 0.45, h * 0.72);
+    leftFang.lineTo(w * 0.48, h * 0.72);
+    leftFang.lineTo(w * 0.465, h * 0.82);
+    leftFang.close();
+
+    final rightFang = Path();
+    rightFang.moveTo(w * 0.52, h * 0.72);
+    rightFang.lineTo(w * 0.55, h * 0.72);
+    rightFang.lineTo(w * 0.535, h * 0.82);
+    rightFang.close();
+
+    final fangPaint = Paint()
+      ..color = const Color(0xFFE8DAC2) // Ivory fangs
+      ..style = PaintingStyle.fill;
+    canvas.drawPath(leftFang, fangPaint);
+    canvas.drawPath(rightFang, fangPaint);
   }
 
   @override
