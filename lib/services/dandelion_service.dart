@@ -33,8 +33,8 @@ class DandelionService {
         return 'http://127.0.0.1:8001';
       }
     }
-    // Replace with your deployed Railway URL when live
-    return 'https://portfolio-production-anshul.up.railway.app';
+    // Deployed Railway URL
+    return 'https://portfolio-production-58530079.up.railway.app';
   }
 
   static String get backendApiUrl => '$backendBaseUrl/api/chat/';
