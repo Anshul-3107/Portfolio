@@ -1,14 +1,10 @@
 {
-  "version": 2,
-  "public": "build/web",
+  "outputDirectory": "build/web",
   "cleanUrls": true,
-  "routes": [
+  "rewrites": [
     {
-      "handle": "filesystem"
-    },
-    {
-      "src": "/(.*)",
-      "dest": "/index.html"
+      "source": "/(.*)",
+      "destination": "/index.html"
     }
   ],
   "headers": [
