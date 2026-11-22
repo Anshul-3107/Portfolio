@@ -6,6 +6,8 @@ import '../../core/theme/witcher_typography.dart';
 import '../../models/portfolio_models.dart';
 import '../../widgets/tier_badge.dart';
 import '../../widgets/witcher_card.dart';
+import '../../widgets/witcher_divider.dart';
+import '../../widgets/witcher_gold_text.dart';
 
 class SignsTab extends StatefulWidget {
   const SignsTab({super.key});
@@ -47,7 +49,7 @@ class _SignsTabState extends State<SignsTab> {
                         size: 24,
                       ),
                       const SizedBox(width: 12),
-                      Text(
+                      WitcherGoldText(
                         "SIGNS, ARSENAL & ALCHEMY",
                         style: WitcherTypography.titleLarge.copyWith(fontSize: 22),
                       ),
@@ -226,9 +228,9 @@ class _SignsTabState extends State<SignsTab> {
               fontStyle: FontStyle.italic,
             ),
           ),
-          const SizedBox(height: 24),
-          const Divider(color: WitcherColors.borderDark, height: 1),
-          const SizedBox(height: 24),
+          const SizedBox(height: 18),
+          WitcherDivider(symbol: '✦', height: 24, color: color),
+          const SizedBox(height: 18),
 
           // Skill Cards Grid
           Text(

@@ -8,6 +8,8 @@ import '../../models/portfolio_models.dart';
 import '../../widgets/runic_button.dart';
 import '../../widgets/tier_badge.dart';
 import '../../widgets/witcher_card.dart';
+import '../../widgets/witcher_divider.dart';
+import '../../widgets/witcher_gold_text.dart';
 
 class NoticeBoardTab extends StatelessWidget {
   const NoticeBoardTab({super.key});
@@ -54,7 +56,7 @@ class NoticeBoardTab extends StatelessWidget {
                         size: 26,
                       ),
                       const SizedBox(width: 12),
-                      Text(
+                      WitcherGoldText(
                         "THE VILLAGE NOTICE BOARD",
                         style: WitcherTypography.titleLarge.copyWith(fontSize: 22),
                       ),
@@ -115,7 +117,7 @@ class NoticeBoardTab extends StatelessWidget {
             ],
           ),
           const SizedBox(height: 12),
-          Text(
+          WitcherGoldText(
             "LOOKING FOR AN AI/ML WITCHER?",
             style: WitcherTypography.titleLarge.copyWith(fontSize: 22),
           ),
@@ -127,9 +129,9 @@ class NoticeBoardTab extends StatelessWidget {
               fontSize: 13.5,
             ),
           ),
-          const SizedBox(height: 20),
-          const Divider(color: WitcherColors.borderDark, height: 1),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
+          const WitcherDivider(symbol: '📜', height: 22),
+          const SizedBox(height: 16),
 
           Text(
             "TERMS OF EMPLOYMENT & EXPERTISE",

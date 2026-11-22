@@ -39,26 +39,43 @@ class _WitcherCardState extends State<WitcherCard> {
             ? WitcherColors.goldBright
             : (_isHovered ? WitcherColors.gold : WitcherColors.borderDark));
 
-    final activeBgColor = widget.backgroundColor ??
-        (widget.isSelected
-            ? const Color(0xFF222631)
-            : (_isHovered ? const Color(0xFF1E212A) : WitcherColors.surface));
+    final isLifted = widget.isInteractive && _isHovered;
 
-    Widget content = Container(
+    Widget content = AnimatedContainer(
+      duration: const Duration(milliseconds: 220),
+      curve: Curves.easeOutCubic,
+      transform: Matrix4.translationValues(0, isLifted ? -3.5 : 0, 0),
       margin: widget.margin,
       decoration: BoxDecoration(
-        color: activeBgColor,
+        color: widget.backgroundColor,
+        gradient: widget.backgroundColor == null
+            ? LinearGradient(
+                begin: Alignment.topLeft,
+                end: Alignment.bottomRight,
+                colors: widget.isSelected
+                    ? const [Color(0xFF262B37), Color(0xFF191C24)]
+                    : (_isHovered
+                        ? const [Color(0xFF222733), Color(0xFF161821)]
+                        : const [Color(0xFF1A1D26), Color(0xFF12141A)]),
+              )
+            : null,
         boxShadow: widget.isSelected || _isHovered
             ? [
                 BoxShadow(
                   color: (widget.borderColor ?? WitcherColors.gold)
-                      .withValues(alpha: widget.isSelected ? 0.35 : 0.18),
-                  blurRadius: 18,
-                  spreadRadius: 1,
+                      .withValues(alpha: widget.isSelected ? 0.35 : 0.22),
+                  blurRadius: widget.isSelected ? 22 : 18,
+                  spreadRadius: widget.isSelected ? 1.5 : 0.5,
+                  offset: isLifted ? const Offset(0, 6) : const Offset(0, 2),
+                ),
+                const BoxShadow(
+                  color: Colors.black54,
+                  blurRadius: 14,
+                  offset: Offset(0, 6),
                 ),
               ]
-            : [
-                const BoxShadow(
+            : const [
+                BoxShadow(
                   color: Colors.black45,
                   blurRadius: 10,
                   offset: Offset(0, 4),
@@ -164,12 +181,18 @@ class _WitcherBorderPainter extends CustomPainter {
 
   void _drawRivet(Canvas canvas, double cx, double cy, Paint paint) {
     final path = Path();
-    path.moveTo(cx, cy - 2.5);
-    path.lineTo(cx + 2.5, cy);
-    path.lineTo(cx, cy + 2.5);
-    path.lineTo(cx - 2.5, cy);
+    path.moveTo(cx, cy - 3.0);
+    path.lineTo(cx + 3.0, cy);
+    path.lineTo(cx, cy + 3.0);
+    path.lineTo(cx - 3.0, cy);
     path.close();
     canvas.drawPath(path, paint);
+
+    // Specular highlight pinpoint
+    final shinePaint = Paint()
+      ..color = Colors.white.withValues(alpha: 0.9)
+      ..style = PaintingStyle.fill;
+    canvas.drawCircle(Offset(cx - 0.7, cy - 0.7), 0.9, shinePaint);
   }
 
   @override

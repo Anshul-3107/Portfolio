@@ -107,6 +107,12 @@
     (function() {
       let audioCtx = null;
       let soundEnabled = true;
+      let ambientAudio = null;
+      let currentTrackIndex = 0;
+      const ambientTracks = [
+        'assets/audio/kaer_morhen.mp3',
+        'assets/audio/ard_skellig.mp3'
+      ];
 
       function getAudioContext() {
         if (!audioCtx) {
@@ -121,8 +127,77 @@
         return audioCtx;
       }
 
+      function fadeVolume(audio, targetVolume, durationMs) {
+        if (!audio) return;
+        const initialVolume = audio.volume;
+        const stepTime = 50;
+        const steps = Math.max(1, durationMs / stepTime);
+        const volumeStep = (targetVolume - initialVolume) / steps;
+        let currentStep = 0;
+
+        const interval = setInterval(() => {
+          currentStep++;
+          let newVol = audio.volume + volumeStep;
+          if ((volumeStep > 0 && newVol >= targetVolume) || (volumeStep < 0 && newVol <= targetVolume) || currentStep >= steps) {
+            audio.volume = Math.max(0, Math.min(1, targetVolume));
+            clearInterval(interval);
+          } else {
+            audio.volume = Math.max(0, Math.min(1, newVol));
+          }
+        }, stepTime);
+      }
+
+      window.startWitcherAmbientMusic = function() {
+        if (!soundEnabled) return;
+        if (!ambientAudio) {
+          ambientAudio = new Audio(ambientTracks[currentTrackIndex]);
+          ambientAudio.loop = false;
+          ambientAudio.volume = 0.0;
+
+          ambientAudio.addEventListener('ended', function() {
+            currentTrackIndex = (currentTrackIndex + 1) % ambientTracks.length;
+            ambientAudio.src = ambientTracks[currentTrackIndex];
+            ambientAudio.volume = 0.0;
+            if (soundEnabled) {
+              ambientAudio.play().then(() => {
+                fadeVolume(ambientAudio, 0.045, 2500);
+              }).catch(() => {});
+            }
+          });
+        }
+
+        ambientAudio.play().then(() => {
+          fadeVolume(ambientAudio, 0.045, 2500);
+        }).catch(() => {});
+      };
+
+      window.pauseWitcherAmbientMusic = function() {
+        if (ambientAudio) {
+          fadeVolume(ambientAudio, 0.0, 700);
+          setTimeout(() => {
+            if (ambientAudio && !soundEnabled) ambientAudio.pause();
+          }, 750);
+        }
+      };
+
+      window.resumeWitcherAmbientMusic = function() {
+        if (!soundEnabled) return;
+        if (ambientAudio) {
+          ambientAudio.play().then(() => {
+            fadeVolume(ambientAudio, 0.045, 1500);
+          }).catch(() => {});
+        } else {
+          window.startWitcherAmbientMusic();
+        }
+      };
+
       window.setWitcherAudioEnabled = function(enabled) {
         soundEnabled = !!enabled;
+        if (soundEnabled) {
+          window.resumeWitcherAmbientMusic();
+        } else {
+          window.pauseWitcherAmbientMusic();
+        }
       };
 
       window.isWitcherAudioEnabled = function() {
@@ -136,107 +211,96 @@
           if (!ctx) return;
           const now = ctx.currentTime;
 
-          if (type === 'tab') {
-            // Resonant parchment / menu swoosh
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-            const filter = ctx.createBiquadFilter();
+          // Only page turning sound plays when switching tabs/chapters
+          if (type === 'tab' || type === 'page_flip' || type === 'page_riffle') {
+            // Soft, gentle antique parchment page turn rustle
+            try {
+              const bufferSize = Math.floor(ctx.sampleRate * 0.32);
+              const buffer = ctx.createBuffer(1, bufferSize, ctx.sampleRate);
+              const data = buffer.getChannelData(0);
+              for (let i = 0; i < bufferSize; i++) {
+                data[i] = (Math.random() * 2 - 1) * (1 - i / bufferSize);
+              }
+              const noise = ctx.createBufferSource();
+              noise.buffer = buffer;
 
-            osc.type = 'triangle';
-            osc.frequency.setValueAtTime(220, now);
-            osc.frequency.exponentialRampToValueAtTime(110, now + 0.18);
+              const filter = ctx.createBiquadFilter();
+              filter.type = 'bandpass';
+              filter.frequency.setValueAtTime(600, now);
+              filter.frequency.exponentialRampToValueAtTime(1400, now + 0.1);
+              filter.frequency.exponentialRampToValueAtTime(380, now + 0.28);
+              filter.Q.setValueAtTime(1.5, now);
 
-            filter.type = 'lowpass';
-            filter.frequency.setValueAtTime(1200, now);
-            filter.frequency.exponentialRampToValueAtTime(300, now + 0.18);
+              const gain = ctx.createGain();
+              gain.gain.setValueAtTime(0.001, now);
+              gain.gain.linearRampToValueAtTime(0.08, now + 0.05);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.30);
 
-            gain.gain.setValueAtTime(0.08, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.2);
+              noise.connect(filter);
+              filter.connect(gain);
+              gain.connect(ctx.destination);
 
-            osc.connect(filter);
-            filter.connect(gain);
-            gain.connect(ctx.destination);
+              noise.start(now);
+              noise.stop(now + 0.32);
 
-            osc.start(now);
-            osc.stop(now + 0.2);
-          } else if (type === 'click') {
-            // Crisp sword sheen / metallic clink
-            const osc = ctx.createOscillator();
-            const osc2 = ctx.createOscillator();
-            const gain = ctx.createGain();
+              // Low air displacement of heavy parchment leaf
+              const sub = ctx.createOscillator();
+              const subGain = ctx.createGain();
+              sub.type = 'sine';
+              sub.frequency.setValueAtTime(85, now);
+              sub.frequency.exponentialRampToValueAtTime(32, now + 0.24);
+              subGain.gain.setValueAtTime(0.045, now);
+              subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.24);
+              sub.connect(subGain);
+              subGain.connect(ctx.destination);
+              sub.start(now);
+              sub.stop(now + 0.24);
+            } catch (_) {}
+          } else if (type === 'sword') {
+            // Metallic blade unsheathe draw sound (only for title screen entry)
+            try {
+              const osc = ctx.createOscillator();
+              const gain = ctx.createGain();
 
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(1400, now);
-            osc.frequency.exponentialRampToValueAtTime(800, now + 0.1);
+              osc.type = 'sawtooth';
+              osc.frequency.setValueAtTime(1200, now);
+              osc.frequency.exponentialRampToValueAtTime(2600, now + 0.08);
+              osc.frequency.exponentialRampToValueAtTime(700, now + 0.5);
 
-            osc2.type = 'triangle';
-            osc2.frequency.setValueAtTime(2800, now);
-            osc2.frequency.exponentialRampToValueAtTime(600, now + 0.08);
+              gain.gain.setValueAtTime(0.008, now);
+              gain.gain.linearRampToValueAtTime(0.075, now + 0.04);
+              gain.gain.exponentialRampToValueAtTime(0.001, now + 0.55);
 
-            gain.gain.setValueAtTime(0.06, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.12);
+              const filter = ctx.createBiquadFilter();
+              filter.type = 'bandpass';
+              filter.frequency.setValueAtTime(2200, now);
+              filter.Q.setValueAtTime(3.5, now);
 
-            osc.connect(gain);
-            osc2.connect(gain);
-            gain.connect(ctx.destination);
+              osc.connect(filter);
+              filter.connect(gain);
+              gain.connect(ctx.destination);
 
-            osc.start(now);
-            osc2.start(now);
-            osc.stop(now + 0.12);
-            osc2.stop(now + 0.12);
-          } else if (type === 'hover') {
-            // Soft rune chime ping
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
+              osc.start(now);
+              osc.stop(now + 0.6);
 
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(587.33, now); // D5 note
-            osc.frequency.exponentialRampToValueAtTime(659.25, now + 0.06); // E5 note
+              // Sub bass resonance of heavy scabbard draw
+              const subOsc = ctx.createOscillator();
+              const subGain = ctx.createGain();
+              subOsc.type = 'sine';
+              subOsc.frequency.setValueAtTime(140, now);
+              subOsc.frequency.exponentialRampToValueAtTime(45, now + 0.45);
 
-            gain.gain.setValueAtTime(0.025, now);
-            gain.gain.exponentialRampToValueAtTime(0.0001, now + 0.08);
+              subGain.gain.setValueAtTime(0.12, now);
+              subGain.gain.exponentialRampToValueAtTime(0.001, now + 0.45);
 
-            osc.connect(gain);
-            gain.connect(ctx.destination);
+              subOsc.connect(subGain);
+              subGain.connect(ctx.destination);
 
-            osc.start(now);
-            osc.stop(now + 0.08);
-          } else if (type === 'seal') {
-            // Low thudding wax seal press
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-
-            osc.type = 'sine';
-            osc.frequency.setValueAtTime(150, now);
-            osc.frequency.exponentialRampToValueAtTime(45, now + 0.25);
-
-            gain.gain.setValueAtTime(0.12, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.3);
-
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-
-            osc.start(now);
-            osc.stop(now + 0.3);
-          } else if (type === 'sign') {
-            // Magic sign casting hum (Igni / Aard / Quen)
-            const osc = ctx.createOscillator();
-            const gain = ctx.createGain();
-
-            osc.type = 'sawtooth';
-            osc.frequency.setValueAtTime(130, now);
-            osc.frequency.linearRampToValueAtTime(260, now + 0.15);
-            osc.frequency.exponentialRampToValueAtTime(65, now + 0.35);
-
-            gain.gain.setValueAtTime(0.04, now);
-            gain.gain.exponentialRampToValueAtTime(0.001, now + 0.38);
-
-            osc.connect(gain);
-            gain.connect(ctx.destination);
-
-            osc.start(now);
-            osc.stop(now + 0.38);
+              subOsc.start(now);
+              subOsc.stop(now + 0.45);
+            } catch (_) {}
           }
+          // All other clicks, taps, hovers, or buttons are completely silent
         } catch (e) {
           // Audio autoplay block or unsupported - gracefully continue
         }

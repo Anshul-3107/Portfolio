@@ -115,4 +115,59 @@ class WitcherTypography {
         letterSpacing: 1.0,
         color: WitcherColors.goldMuted,
       );
+
+  // Antique Manuscript & Parchment Typography
+  static TextStyle get parchmentTitle => const TextStyle(
+        fontFamily: fontCinzel,
+        fontFamilyFallback: fallbackSerif,
+        fontSize: 22,
+        fontWeight: FontWeight.w800,
+        letterSpacing: 2.5,
+        color: WitcherColors.inkCrimson,
+      );
+
+  static TextStyle get parchmentHeading => const TextStyle(
+        fontFamily: fontCinzel,
+        fontFamilyFallback: fallbackSerif,
+        fontSize: 17,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 1.8,
+        color: WitcherColors.inkPrimary,
+      );
+
+  static TextStyle get parchmentSubheading => const TextStyle(
+        fontFamily: fontCinzel,
+        fontFamilyFallback: fallbackSerif,
+        fontSize: 13,
+        fontWeight: FontWeight.w600,
+        letterSpacing: 1.4,
+        color: WitcherColors.inkGold,
+      );
+
+  static TextStyle get parchmentBody => const TextStyle(
+        fontFamily: fontLore,
+        fontFamilyFallback: fallbackSerif,
+        fontSize: 13.5,
+        fontWeight: FontWeight.w400,
+        height: 1.55,
+        color: WitcherColors.inkSecondary,
+      );
+
+  static TextStyle get parchmentFolio => const TextStyle(
+        fontFamily: fontCinzel,
+        fontFamilyFallback: fallbackSerif,
+        fontSize: 10,
+        fontWeight: FontWeight.w700,
+        letterSpacing: 2.2,
+        color: WitcherColors.inkMuted,
+      );
+
+  static TextStyle get parchmentDropCap => const TextStyle(
+        fontFamily: fontDecorative,
+        fontFamilyFallback: fallbackSerif,
+        fontSize: 34,
+        fontWeight: FontWeight.w900,
+        height: 0.9,
+        color: WitcherColors.inkCrimson,
+      );
 }

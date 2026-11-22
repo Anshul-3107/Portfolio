@@ -8,6 +8,7 @@ import '../../models/portfolio_models.dart';
 import '../../widgets/runic_button.dart';
 import '../../widgets/tier_badge.dart';
 import '../../widgets/witcher_card.dart';
+import '../../widgets/witcher_gold_text.dart';
 
 class ContractsTab extends StatefulWidget {
   const ContractsTab({super.key});
@@ -78,7 +79,7 @@ class _ContractsTabState extends State<ContractsTab> {
                         size: 24,
                       ),
                       const SizedBox(width: 12),
-                      Text(
+                      WitcherGoldText(
                         "WITCHER CONTRACT LOG",
                         style: WitcherTypography.titleLarge.copyWith(fontSize: 22),
                       ),
@@ -386,7 +387,7 @@ class _ContractsTabState extends State<ContractsTab> {
                         child: Row(
                           mainAxisSize: MainAxisSize.min,
                           children: [
-                            Text(
+                            WitcherGoldText(
                               contract.title,
                               style: WitcherTypography.titleLarge.copyWith(fontSize: 24),
                             ),

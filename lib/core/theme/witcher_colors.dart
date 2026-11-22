@@ -28,11 +28,45 @@ class WitcherColors {
   static const Color signYrden = Color(0xFFAB47BC);   // Trap / Architecture & DBMS
   static const Color signAlchemy = Color(0xFF26A69A); // Alchemy / Data Science
 
-  // Text & Parchment
+  // Text & Parchment (Dark UI)
   static const Color textParchmentLight = Color(0xFFEDE9DF);
   static const Color textParchment = Color(0xFFCDC8BA);
   static const Color textMuted = Color(0xFF8F8A7E);
   static const Color textDark = Color(0xFF5C574E);
+
+  // Antique Book & Grimoire Theme (Authentic Medieval Codex)
+  // Leather Casing
+  static const Color leatherDark = Color(0xFF150E09);
+  static const Color leatherMedium = Color(0xFF22160F);
+  static const Color leatherLight = Color(0xFF332216);
+  static const Color leatherBorder = Color(0xFF452D1E);
+  static const Color leatherCrease = Color(0xFF0F0A06);
+
+  // Aged Parchment Leaf Gradients
+  static const Color parchmentLight = Color(0xFFF7F1E1);
+  static const Color parchmentBase = Color(0xFFEDE2C8);
+  static const Color parchmentAged = Color(0xFFDFCFAF);
+  static const Color parchmentShadow = Color(0xFFC7B38D);
+  static const Color parchmentEdge = Color(0xFFA68E66);
+  static const Color parchmentStain = Color(0xFF826B47);
+
+  // Antique Manuscript Inks
+  static const Color inkPrimary = Color(0xFF1E1712);      // Deep rich charcoal-sepia
+  static const Color inkSecondary = Color(0xFF3C3026);    // Body text sepia
+  static const Color inkMuted = Color(0xFF6B5847);        // Captions & footnotes
+  static const Color inkFaint = Color(0xFF9E8A74);        // Faint runes / guide lines
+  static const Color inkCrimson = Color(0xFF7D1510);      // Drop caps & illuminated titles
+  static const Color inkCrimsonBright = Color(0xFF9E1D16);
+  static const Color inkGold = Color(0xFF886315);         // Gilded headings & flourishes
+  static const Color inkGoldBright = Color(0xFFA67C22);
+
+  // Tome Binding & Hardware
+  static const Color brassBase = Color(0xFFB58E45);
+  static const Color brassHighlight = Color(0xFFDFC074);
+  static const Color brassShadow = Color(0xFF5C451A);
+  static const Color waxSealRed = Color(0xFFA81C14);
+  static const Color waxSealGlow = Color(0xFFD63B32);
+  static const Color waxSealShadow = Color(0xFF5C0D07);
 
   // Armor Tier Colors
   static const Color tierGrandmaster = Color(0xFFFFB74D);

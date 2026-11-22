@@ -20,11 +20,12 @@ class StatBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final percentage = (value.clamp(0.0, 1.0) * 100).toInt();
+    final clampedValue = value.clamp(0.0, 1.0);
+    final percentage = (clampedValue * 100).toInt();
     final textValue = displayValue ?? '$percentage%';
 
     return Padding(
-      padding: const EdgeInsets.symmetric(vertical: 6),
+      padding: const EdgeInsets.symmetric(vertical: 7),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
@@ -35,62 +36,90 @@ class StatBar extends StatelessWidget {
                 children: [
                   if (icon != null) ...[
                     Icon(icon, size: 14, color: barColor),
-                    const SizedBox(width: 6),
+                    const SizedBox(width: 7),
                   ],
                   Text(
                     label,
                     style: WitcherTypography.bodyMedium.copyWith(
                       color: WitcherColors.textParchmentLight,
                       fontWeight: FontWeight.w600,
+                      fontSize: 13,
                     ),
                   ),
                 ],
               ),
-              Text(
-                textValue,
-                style: WitcherTypography.metricLabel.copyWith(
-                  color: barColor,
-                  fontWeight: FontWeight.w700,
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 1.5),
+                decoration: BoxDecoration(
+                  color: barColor.withValues(alpha: 0.12),
+                  border: Border.all(color: barColor.withValues(alpha: 0.4), width: 0.8),
+                  borderRadius: BorderRadius.circular(2),
+                ),
+                child: Text(
+                  textValue,
+                  style: WitcherTypography.metricLabel.copyWith(
+                    color: barColor,
+                    fontWeight: FontWeight.w800,
+                    fontSize: 11,
+                    letterSpacing: 0.6,
+                  ),
                 ),
               ),
             ],
           ),
-          const SizedBox(height: 6),
+          const SizedBox(height: 7),
           Container(
-            height: 10,
+            height: 11,
             decoration: BoxDecoration(
-              color: const Color(0xFF101217),
+              color: const Color(0xFF0F1117),
               border: Border.all(color: WitcherColors.borderDark, width: 1),
+              boxShadow: const [
+                BoxShadow(
+                  color: Colors.black54,
+                  blurRadius: 4,
+                  offset: Offset(0, 1),
+                ),
+              ],
             ),
             child: Stack(
               children: [
                 FractionallySizedBox(
-                  widthFactor: value.clamp(0.0, 1.0),
+                  widthFactor: clampedValue,
                   child: Container(
                     decoration: BoxDecoration(
                       gradient: LinearGradient(
                         colors: [
-                          barColor.withValues(alpha: 0.7),
+                          barColor.withValues(alpha: 0.75),
                           barColor,
+                          Color.lerp(barColor, Colors.white, 0.25)!,
                         ],
+                        stops: const [0.0, 0.85, 1.0],
                       ),
                       boxShadow: [
                         BoxShadow(
-                          color: barColor.withValues(alpha: 0.4),
-                          blurRadius: 6,
+                          color: barColor.withValues(alpha: 0.5),
+                          blurRadius: 8,
+                          spreadRadius: 0.5,
                         ),
                       ],
                     ),
                   ),
                 ),
-                // Subtle metallic reflection line
+                // Metallic specular line
                 Positioned(
                   top: 1,
                   left: 0,
                   right: 0,
                   height: 1.5,
                   child: Container(
-                    color: Colors.white.withValues(alpha: 0.15),
+                    decoration: BoxDecoration(
+                      gradient: LinearGradient(
+                        colors: [
+                          Colors.white.withValues(alpha: 0.3),
+                          Colors.white.withValues(alpha: 0.05),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
               ],

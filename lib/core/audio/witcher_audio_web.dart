@@ -18,6 +18,15 @@ external JSBoolean _jsToggleFullscreen();
 @JS('isWitcherFullscreen')
 external JSBoolean _jsIsFullscreen();
 
+@JS('startWitcherAmbientMusic')
+external void _jsStartWitcherAmbientMusic();
+
+@JS('pauseWitcherAmbientMusic')
+external void _jsPauseWitcherAmbientMusic();
+
+@JS('resumeWitcherAmbientMusic')
+external void _jsResumeWitcherAmbientMusic();
+
 void platformPlayWitcherAudio(String type) {
   try {
     _jsPlayWitcherAudio(type.toJS);
@@ -56,4 +65,22 @@ bool platformIsFullscreen() {
   } catch (_) {
     return false;
   }
+}
+
+void platformStartWitcherAmbient() {
+  try {
+    _jsStartWitcherAmbientMusic();
+  } catch (_) {}
+}
+
+void platformPauseWitcherAmbient() {
+  try {
+    _jsPauseWitcherAmbientMusic();
+  } catch (_) {}
+}
+
+void platformResumeWitcherAmbient() {
+  try {
+    _jsResumeWitcherAmbientMusic();
+  } catch (_) {}
 }

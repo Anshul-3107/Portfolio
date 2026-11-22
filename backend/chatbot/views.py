@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import status
 from .serializers import ChatRequestSerializer, ChatResponseSerializer
 from .services import GeminiDandelionService
+from .leetcode_service import LeetCodeService
 
 class DandelionChatAPIView(APIView):
     """
@@ -35,3 +36,13 @@ class DandelionChatAPIView(APIView):
             "status": "success"
         }
         return Response(response_data, status=status.HTTP_200_OK)
+
+
+class LeetCodeStatsAPIView(APIView):
+    """
+    GET /api/leetcode/
+    Returns live or cached LeetCode combat telemetry for anshularohi without CORS blocks.
+    """
+    def get(self, request, *args, **kwargs):
+        stats = LeetCodeService.get_stats()
+        return Response(stats, status=status.HTTP_200_OK)

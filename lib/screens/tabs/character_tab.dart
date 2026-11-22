@@ -4,10 +4,13 @@ import '../../core/constants/resume_data.dart';
 import '../../core/theme/witcher_colors.dart';
 import '../../core/theme/witcher_typography.dart';
 import '../../models/portfolio_models.dart';
+import '../../widgets/leetcode_telemetry_card.dart';
 import '../../widgets/runic_button.dart';
 import '../../widgets/stat_bar.dart';
 import '../../widgets/tier_badge.dart';
 import '../../widgets/witcher_card.dart';
+import '../../widgets/witcher_divider.dart';
+import '../../widgets/witcher_gold_text.dart';
 import '../../widgets/witcher_medallion.dart';
 
 class CharacterTab extends StatelessWidget {
@@ -35,22 +38,29 @@ class CharacterTab extends StatelessWidget {
           child: Center(
             child: ConstrainedBox(
               constraints: const BoxConstraints(maxWidth: 1200),
-              child: isDesktop
-                  ? Row(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Expanded(flex: 4, child: _buildDossierColumn(context)),
-                        const SizedBox(width: 24),
-                        Expanded(flex: 6, child: _buildLoreColumn(context)),
-                      ],
-                    )
-                  : Column(
-                      children: [
-                        _buildDossierColumn(context),
-                        const SizedBox(height: 24),
-                        _buildLoreColumn(context),
-                      ],
-                    ),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.stretch,
+                children: [
+                  isDesktop
+                      ? Row(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Expanded(flex: 4, child: _buildDossierColumn(context)),
+                            const SizedBox(width: 24),
+                            Expanded(flex: 6, child: _buildLoreColumn(context)),
+                          ],
+                        )
+                      : Column(
+                          children: [
+                            _buildDossierColumn(context),
+                            const SizedBox(height: 24),
+                            _buildLoreColumn(context),
+                          ],
+                        ),
+                  const SizedBox(height: 24),
+                  const LeetCodeTelemetryCard(),
+                ],
+              ),
             ),
           ),
         );
@@ -70,6 +80,17 @@ class CharacterTab extends StatelessWidget {
             alignment: Alignment.center,
             children: [
               Container(
+                width: 156,
+                height: 156,
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: WitcherColors.gold.withValues(alpha: 0.35),
+                    width: 1,
+                  ),
+                ),
+              ),
+              Container(
                 width: 140,
                 height: 140,
                 decoration: BoxDecoration(
@@ -77,15 +98,15 @@ class CharacterTab extends StatelessWidget {
                   border: Border.all(color: WitcherColors.goldBright, width: 2),
                   boxShadow: [
                     BoxShadow(
-                      color: WitcherColors.gold.withValues(alpha: 0.25),
-                      blurRadius: 20,
-                      spreadRadius: 2,
+                      color: WitcherColors.gold.withValues(alpha: 0.3),
+                      blurRadius: 24,
+                      spreadRadius: 3,
                     ),
                   ],
-                  gradient: RadialGradient(
+                  gradient: const RadialGradient(
                     colors: [
-                      const Color(0xFF262C38),
-                      WitcherColors.background,
+                      Color(0xFF2C3342),
+                      Color(0xFF141720),
                     ],
                   ),
                 ),
@@ -96,7 +117,7 @@ class CharacterTab extends StatelessWidget {
           const SizedBox(height: 16),
 
           // Name and Moniker
-          Text(
+          WitcherGoldText(
             ResumeData.witcherTitle.toUpperCase(),
             style: WitcherTypography.titleLarge.copyWith(
               fontSize: 24,
@@ -126,10 +147,10 @@ class CharacterTab extends StatelessWidget {
               letterSpacing: 1.8,
             ),
           ),
-          const SizedBox(height: 20),
+          const SizedBox(height: 16),
 
-          const Divider(color: WitcherColors.borderDark, height: 1),
-          const SizedBox(height: 20),
+          const WitcherDivider(symbol: '⚔', height: 24),
+          const SizedBox(height: 16),
 
           // Equipped Greater Mutagen Slot (AWS ML Engineer)
           Container(
@@ -265,13 +286,15 @@ class CharacterTab extends StatelessWidget {
                     size: 20,
                   ),
                   const SizedBox(width: 10),
-                  Text(
+                  WitcherGoldText(
                     "CHRONICLES OF THE NEURAL WOLF",
                     style: WitcherTypography.titleMedium.copyWith(fontSize: 16),
                   ),
                 ],
               ),
-              const SizedBox(height: 14),
+              const SizedBox(height: 8),
+              const WitcherDivider(symbol: '❖', height: 18),
+              const SizedBox(height: 6),
               Text(
                 ResumeData.witcherMotto,
                 style: WitcherTypography.quoteText.copyWith(fontSize: 14.5),
@@ -311,13 +334,15 @@ class CharacterTab extends StatelessWidget {
                     size: 20,
                   ),
                   const SizedBox(width: 10),
-                  Text(
+                  WitcherGoldText(
                     "MASTERED COMBAT DISCIPLINES",
                     style: WitcherTypography.titleMedium.copyWith(fontSize: 16),
                   ),
                 ],
               ),
-              const SizedBox(height: 18),
+              const SizedBox(height: 8),
+              const WitcherDivider(symbol: '✦', height: 18),
+              const SizedBox(height: 6),
               _buildDisciplineTile(
                 icon: Icons.biotech_rounded,
                 color: WitcherColors.signIgni,

@@ -6,6 +6,8 @@ import '../../core/theme/witcher_typography.dart';
 import '../../models/portfolio_models.dart';
 import '../../widgets/tier_badge.dart';
 import '../../widgets/witcher_card.dart';
+import '../../widgets/witcher_divider.dart';
+import '../../widgets/witcher_gold_text.dart';
 
 class GlossaryTab extends StatelessWidget {
   const GlossaryTab({super.key});
@@ -37,7 +39,7 @@ class GlossaryTab extends StatelessWidget {
                         size: 24,
                       ),
                       const SizedBox(width: 12),
-                      Text(
+                      WitcherGoldText(
                         "GLOSSARY & CHRONICLES",
                         style: WitcherTypography.titleLarge.copyWith(fontSize: 22),
                       ),
@@ -84,13 +86,15 @@ class GlossaryTab extends StatelessWidget {
           children: [
             const Icon(Icons.school_rounded, color: WitcherColors.gold, size: 20),
             const SizedBox(width: 10),
-            Text(
+            WitcherGoldText(
               "ACADEMIC BASTIONS",
               style: WitcherTypography.titleMedium.copyWith(fontSize: 16),
             ),
           ],
         ),
-        const SizedBox(height: 14),
+        const SizedBox(height: 8),
+        const WitcherDivider(symbol: '📜', height: 16),
+        const SizedBox(height: 8),
         ...ResumeData.education.map((edu) {
           final isVit = edu.institution.contains("Vellore");
 
@@ -177,13 +181,15 @@ class GlossaryTab extends StatelessWidget {
           children: [
             const Icon(Icons.workspace_premium_rounded, color: WitcherColors.gold, size: 20),
             const SizedBox(width: 10),
-            Text(
+            WitcherGoldText(
               "OFFICIAL ACCREDITATIONS & TROPHIES",
               style: WitcherTypography.titleMedium.copyWith(fontSize: 16),
             ),
           ],
         ),
-        const SizedBox(height: 14),
+        const SizedBox(height: 8),
+        const WitcherDivider(symbol: '⚔', height: 16),
+        const SizedBox(height: 8),
         ...ResumeData.certifications.map((cert) {
           final isAws = cert.tier == ArmorTier.grandmaster;
 

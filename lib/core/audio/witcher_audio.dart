@@ -20,12 +20,10 @@ class WitcherAudio {
   }
 
   static void downloadResume() {
-    seal();
     platformDownloadResume();
   }
 
   static bool toggleFullscreen() {
-    click();
     return platformToggleFullscreen();
   }
 
@@ -33,10 +31,20 @@ class WitcherAudio {
     return platformIsFullscreen();
   }
 
-  // Convenience methods
-  static void tab() => play('tab');
-  static void click() => play('click');
-  static void hover() => play('hover');
-  static void seal() => play('seal');
-  static void sign() => play('sign');
+  // Convenience methods - Only page turns have audio when switching tabs
+  static void tab() => play('page_flip');
+  static void pageFlip() => play('page_flip');
+  static void pageRiffle() => play('page_flip');
+  
+  // Non-tab interactions are silent as requested ("no need of the sound")
+  static void click() {}
+  static void hover() {}
+  static void seal() {}
+  static void sign() {}
+  static void sword() => play('sword');
+
+  // Ambient Soundtrack Controls (Kaer Morhen & Ard Skellig)
+  static void startAmbient() => platformStartWitcherAmbient();
+  static void pauseAmbient() => platformPauseWitcherAmbient();
+  static void resumeAmbient() => platformResumeWitcherAmbient();
 }

@@ -38,6 +38,54 @@ extension ArmorTierExtension on ArmorTier {
         return const Color(0xFFB0BEC5); // Steel Slate
     }
   }
+
+  // High-Contrast Antique Ink Color for Parchment Readability
+  Color get inkColor {
+    switch (this) {
+      case ArmorTier.grandmaster:
+        return const Color(0xFF6E3E00); // Deep rich bronze amber ink
+      case ArmorTier.mastercrafted:
+        return const Color(0xFF0C3D5E); // Deep sapphire cobalt ink
+      case ArmorTier.superior:
+        return const Color(0xFF14471E); // Deep forest emerald ink
+      case ArmorTier.enhanced:
+        return const Color(0xFF4E165C); // Deep royal amethyst ink
+      case ArmorTier.standard:
+        return const Color(0xFF282E33); // Deep charcoal iron ink
+    }
+  }
+
+  // Solid Parchment Badge Fill
+  Color get badgeBgColor {
+    switch (this) {
+      case ArmorTier.grandmaster:
+        return const Color(0xFFF7EACD);
+      case ArmorTier.mastercrafted:
+        return const Color(0xFFDCEAF2);
+      case ArmorTier.superior:
+        return const Color(0xFFDCF0DF);
+      case ArmorTier.enhanced:
+        return const Color(0xFFF2DCF7);
+      case ArmorTier.standard:
+        return const Color(0xFFE2E7EA);
+    }
+  }
+
+  // Sharp Readable Border
+  Color get badgeBorderColor {
+    switch (this) {
+      case ArmorTier.grandmaster:
+        return const Color(0xFF9E6105);
+      case ArmorTier.mastercrafted:
+        return const Color(0xFF1B6594);
+      case ArmorTier.superior:
+        return const Color(0xFF257335);
+      case ArmorTier.enhanced:
+        return const Color(0xFF76268C);
+      case ArmorTier.standard:
+        return const Color(0xFF4A555C);
+    }
+  }
 }
 
 enum ContractStatus {

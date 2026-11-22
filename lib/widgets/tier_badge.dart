@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import '../core/theme/witcher_typography.dart';
 import '../models/portfolio_models.dart';
 
 class TierBadge extends StatelessWidget {
@@ -14,21 +13,24 @@ class TierBadge extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final color = tier.color;
+    final ink = tier.inkColor;
+    final bg = tier.badgeBgColor;
+    final border = tier.badgeBorderColor;
 
     return Container(
       padding: EdgeInsets.symmetric(
-        horizontal: compact ? 7 : 12,
-        vertical: compact ? 2.5 : 5,
+        horizontal: compact ? 8 : 12,
+        vertical: compact ? 3 : 5,
       ),
       decoration: BoxDecoration(
-        color: color.withValues(alpha: 0.12),
-        border: Border.all(color: color.withValues(alpha: 0.8), width: 1.0),
-        borderRadius: BorderRadius.circular(2),
-        boxShadow: [
+        color: bg,
+        border: Border.all(color: border, width: 1.2),
+        borderRadius: BorderRadius.circular(3),
+        boxShadow: const [
           BoxShadow(
-            color: color.withValues(alpha: 0.25),
-            blurRadius: 6,
+            color: Color(0x1E000000),
+            blurRadius: 3,
+            offset: Offset(0, 1),
           ),
         ],
       ),
@@ -41,17 +43,18 @@ class TierBadge extends StatelessWidget {
                 : (tier == ArmorTier.mastercrafted
                     ? Icons.military_tech_rounded
                     : Icons.workspace_premium_rounded),
-            size: compact ? 11 : 14,
-            color: color,
+            size: compact ? 12 : 14,
+            color: ink,
           ),
-          const SizedBox(width: 4),
+          const SizedBox(width: 5),
           Text(
             tier.displayName.toUpperCase(),
-            style: WitcherTypography.tagText.copyWith(
-              color: color,
-              fontSize: compact ? 9.5 : 11.5,
-              fontWeight: FontWeight.w700,
-              letterSpacing: compact ? 0.8 : 1.2,
+            style: TextStyle(
+              fontFamily: 'Cinzel',
+              color: ink,
+              fontSize: compact ? 9.5 : 11,
+              fontWeight: FontWeight.w800,
+              letterSpacing: 1.1,
             ),
           ),
         ],

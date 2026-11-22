@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import '../core/theme/witcher_colors.dart';
 
-class WitcherMedallion extends StatelessWidget {
+class WitcherMedallion extends StatefulWidget {
   final double size;
   final Color? color;
   final bool glowing;
@@ -14,36 +14,100 @@ class WitcherMedallion extends StatelessWidget {
   });
 
   @override
-  Widget build(BuildContext context) {
-    final medallionColor = color ?? WitcherColors.gold;
+  State<WitcherMedallion> createState() => _WitcherMedallionState();
+}
 
-    return Container(
-      width: size,
-      height: size,
-      decoration: glowing
-          ? BoxDecoration(
-              shape: BoxShape.circle,
-              boxShadow: [
-                BoxShadow(
-                  color: medallionColor.withValues(alpha: 0.35),
-                  blurRadius: size * 0.4,
-                  spreadRadius: size * 0.05,
-                ),
-              ],
-            )
-          : null,
-      child: CustomPaint(
-        size: Size(size, size),
-        painter: _WitcherWolfPainter(color: medallionColor),
-      ),
+class _WitcherMedallionState extends State<WitcherMedallion>
+    with SingleTickerProviderStateMixin {
+  late AnimationController _pulseController;
+  late Animation<double> _pulseAnimation;
+
+  @override
+  void initState() {
+    super.initState();
+    _pulseController = AnimationController(
+      vsync: this,
+      duration: const Duration(milliseconds: 2400),
+    );
+    _pulseAnimation = CurvedAnimation(
+      parent: _pulseController,
+      curve: Curves.easeInOutSine,
+    );
+    if (widget.glowing) {
+      _pulseController.repeat(reverse: true);
+    }
+  }
+
+  @override
+  void didUpdateWidget(covariant WitcherMedallion oldWidget) {
+    super.didUpdateWidget(oldWidget);
+    if (widget.glowing && !_pulseController.isAnimating) {
+      _pulseController.repeat(reverse: true);
+    } else if (!widget.glowing && _pulseController.isAnimating) {
+      _pulseController.stop();
+    }
+  }
+
+  @override
+  void dispose() {
+    _pulseController.dispose();
+    super.dispose();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final medallionColor = widget.color ?? WitcherColors.gold;
+
+    return AnimatedBuilder(
+      animation: _pulseAnimation,
+      builder: (context, child) {
+        final glowFactor = widget.glowing ? _pulseAnimation.value : 0.0;
+        final auraRadius = widget.size * (0.35 + glowFactor * 0.18);
+        final eyeColor = Color.lerp(
+          WitcherColors.goldBright,
+          WitcherColors.crimsonBright,
+          glowFactor,
+        )!;
+
+        return Container(
+          width: widget.size,
+          height: widget.size,
+          decoration: widget.glowing
+              ? BoxDecoration(
+                  shape: BoxShape.circle,
+                  boxShadow: [
+                    BoxShadow(
+                      color: medallionColor.withValues(alpha: 0.22 + glowFactor * 0.22),
+                      blurRadius: auraRadius,
+                      spreadRadius: widget.size * 0.04,
+                    ),
+                  ],
+                )
+              : null,
+          child: CustomPaint(
+            size: Size(widget.size, widget.size),
+            painter: _WitcherWolfPainter(
+              color: medallionColor,
+              eyeColor: eyeColor,
+              glowIntensity: glowFactor,
+            ),
+          ),
+        );
+      },
     );
   }
 }
 
 class _WitcherWolfPainter extends CustomPainter {
   final Color color;
+  final Color eyeColor;
+  final double glowIntensity;
 
-  _WitcherWolfPainter({required this.color});
+  _WitcherWolfPainter({
+    required this.color,
+    this.eyeColor = WitcherColors.goldBright,
+    this.glowIntensity = 0.0,
+  });
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -59,6 +123,10 @@ class _WitcherWolfPainter extends CustomPainter {
 
     final fillPaint = Paint()
       ..color = color.withValues(alpha: 0.15)
+      ..style = PaintingStyle.fill;
+
+    final eyePaint = Paint()
+      ..color = eyeColor
       ..style = PaintingStyle.fill;
 
     final accentPaint = Paint()
@@ -108,14 +176,24 @@ class _WitcherWolfPainter extends CustomPainter {
     leftEye.lineTo(w * 0.45, h * 0.47);
     leftEye.lineTo(w * 0.40, h * 0.52);
     leftEye.close();
-    canvas.drawPath(leftEye, accentPaint);
 
     final rightEye = Path();
     rightEye.moveTo(w * 0.62, h * 0.46);
     rightEye.lineTo(w * 0.55, h * 0.47);
     rightEye.lineTo(w * 0.60, h * 0.52);
     rightEye.close();
-    canvas.drawPath(rightEye, accentPaint);
+
+    // Eye glow halo if pulsating
+    if (glowIntensity > 0) {
+      final glowPaint = Paint()
+        ..color = eyeColor.withValues(alpha: 0.4 + glowIntensity * 0.4)
+        ..maskFilter = MaskFilter.blur(BlurStyle.normal, w * 0.08);
+      canvas.drawPath(leftEye, glowPaint);
+      canvas.drawPath(rightEye, glowPaint);
+    }
+
+    canvas.drawPath(leftEye, eyePaint);
+    canvas.drawPath(rightEye, eyePaint);
 
     // Central Nose Rune
     final noseRune = Path();
@@ -128,5 +206,7 @@ class _WitcherWolfPainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _WitcherWolfPainter oldDelegate) =>
-      oldDelegate.color != color;
+      oldDelegate.color != color ||
+      oldDelegate.eyeColor != eyeColor ||
+      oldDelegate.glowIntensity != glowIntensity;
 }

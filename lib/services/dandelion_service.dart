@@ -20,18 +20,21 @@ class ChatMessage {
 }
 
 class DandelionService {
-  // In development, talks to local Django at 127.0.0.1:8000.
+  // In development, talks to local Django at 127.0.0.1:8001 (to avoid conflict with other projects on 8000).
   // In production, talks to your deployed cloud backend or falls back gracefully.
-  static String get backendApiUrl {
+  static String get backendBaseUrl {
     if (kIsWeb) {
       final host = Uri.base.host;
       if (host == 'localhost' || host == '127.0.0.1') {
-        return 'http://127.0.0.1:8000/api/chat/';
+        return 'http://127.0.0.1:8001';
       }
     }
     // Replace with your deployed Render/Railway URL when deployed
-    return 'https://anshul-portfolio-backend.onrender.com/api/chat/';
+    return 'https://anshul-portfolio-backend.onrender.com';
   }
+
+  static String get backendApiUrl => '$backendBaseUrl/api/chat/';
+  static String get leetCodeApiUrl => '$backendBaseUrl/api/leetcode/';
 
   static Future<String> sendMessage({
     required String message,

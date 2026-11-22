@@ -9,14 +9,26 @@ class DandelionChatWidget extends StatefulWidget {
   const DandelionChatWidget({super.key});
 
   @override
-  State<DandelionChatWidget> createState() => _DandelionChatWidgetState();
+  State<DandelionChatWidget> createState() => DandelionChatWidgetState();
 }
 
-class _DandelionChatWidgetState extends State<DandelionChatWidget> {
+class DandelionChatWidgetState extends State<DandelionChatWidget> {
   bool _isOpen = false;
   bool _isLoading = false;
   final TextEditingController _textController = TextEditingController();
   final ScrollController _scrollController = ScrollController();
+
+  void openChat() {
+    if (!_isOpen) {
+      setState(() => _isOpen = true);
+      WitcherAudio.sign();
+      _scrollToBottom();
+    }
+  }
+
+  void toggleChat() {
+    _toggleChat();
+  }
 
   final List<ChatMessage> _messages = [
     ChatMessage(
