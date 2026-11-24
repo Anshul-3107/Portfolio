@@ -104,29 +104,35 @@ class DandelionChatWidgetState extends State<DandelionChatWidget> {
 
   @override
   Widget build(BuildContext context) {
+    final screenWidth = MediaQuery.of(context).size.width;
+    final isMobile = screenWidth < 600;
+
     return Positioned(
-      bottom: 48,
-      right: 24,
+      bottom: isMobile ? 16 : 36,
+      right: isMobile ? 12 : 24,
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
         mainAxisSize: MainAxisSize.min,
         children: [
           if (_isOpen) _buildChatWindow(context),
-          if (_isOpen) const SizedBox(height: 12),
-          _buildFloatingButton(),
+          if (_isOpen) const SizedBox(height: 10),
+          _buildFloatingButton(isMobile),
         ],
       ),
     );
   }
 
-  Widget _buildFloatingButton() {
+  Widget _buildFloatingButton(bool isMobile) {
     return MouseRegion(
       cursor: SystemMouseCursors.click,
       onEnter: (_) => WitcherAudio.hover(),
       child: GestureDetector(
         onTap: _toggleChat,
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+          padding: EdgeInsets.symmetric(
+            horizontal: isMobile ? 11 : 16,
+            vertical: isMobile ? 7 : 10,
+          ),
           decoration: BoxDecoration(
             color: const Color(0xFF14171E),
             border: Border.all(color: WitcherColors.goldBright, width: 1.5),
@@ -134,7 +140,7 @@ class DandelionChatWidgetState extends State<DandelionChatWidget> {
             boxShadow: [
               BoxShadow(
                 color: WitcherColors.gold.withValues(alpha: 0.35),
-                blurRadius: 14,
+                blurRadius: 12,
                 spreadRadius: 1,
               ),
             ],
@@ -143,27 +149,29 @@ class DandelionChatWidgetState extends State<DandelionChatWidget> {
             mainAxisSize: MainAxisSize.min,
             children: [
               Container(
-                width: 28,
-                height: 28,
+                width: isMobile ? 24 : 28,
+                height: isMobile ? 24 : 28,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   color: WitcherColors.gold.withValues(alpha: 0.2),
                   border: Border.all(color: WitcherColors.goldBright),
                 ),
-                child: const Icon(
+                child: Icon(
                   Icons.history_edu_rounded,
                   color: WitcherColors.goldBright,
-                  size: 16,
+                  size: isMobile ? 13 : 16,
                 ),
               ),
-              const SizedBox(width: 10),
+              const SizedBox(width: 8),
               Text(
-                _isOpen ? "CLOSE SCRIBE" : "CONSULT DANDELION",
+                _isOpen
+                    ? (isMobile ? "CLOSE" : "CLOSE SCRIBE")
+                    : (isMobile ? "DANDELION" : "CONSULT DANDELION"),
                 style: WitcherTypography.tagText.copyWith(
                   color: WitcherColors.goldBright,
-                  fontSize: 12,
+                  fontSize: isMobile ? 10.5 : 12,
                   fontWeight: FontWeight.w800,
-                  letterSpacing: 1.4,
+                  letterSpacing: isMobile ? 1.0 : 1.4,
                 ),
               ),
             ],
@@ -174,10 +182,12 @@ class DandelionChatWidgetState extends State<DandelionChatWidget> {
   }
 
   Widget _buildChatWindow(BuildContext context) {
-    final screenWidth = MediaQuery.of(context).size.width;
+    final media = MediaQuery.of(context);
+    final screenWidth = media.size.width;
+    final screenHeight = media.size.height;
     final isMobile = screenWidth < 600;
-    final windowWidth = isMobile ? screenWidth - 32 : 420.0;
-    const windowHeight = 520.0;
+    final windowWidth = isMobile ? screenWidth - 24 : 420.0;
+    final windowHeight = isMobile ? (screenHeight * 0.70).clamp(320.0, 520.0) : 520.0;
 
     return WitcherCard(
       borderColor: WitcherColors.goldBright,

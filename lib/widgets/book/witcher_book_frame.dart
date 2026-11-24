@@ -83,6 +83,18 @@ class WitcherBookFrame extends StatelessWidget {
                               ),
                             ),
                           ),
+                        )
+                      else
+                        Positioned(
+                          top: 0,
+                          left: 0,
+                          right: 0,
+                          height: 12,
+                          child: IgnorePointer(
+                            child: CustomPaint(
+                              painter: _MobileTopBinderPainter(),
+                            ),
+                          ),
                         ),
                     ],
                   ),
@@ -97,11 +109,17 @@ class WitcherBookFrame extends StatelessWidget {
 
   // Elegant Calligraphic Header on the Parchment
   Widget _buildManuscriptHeader(BuildContext context, bool isDesktop) {
+    if (isDesktop) {
+      return _buildDesktopHeader(context);
+    } else {
+      return _buildMobileHeader(context);
+    }
+  }
+
+  Widget _buildDesktopHeader(BuildContext context) {
     return Container(
       height: 52,
-      padding: EdgeInsets.symmetric(
-        horizontal: isDesktop ? 24 : 12,
-      ),
+      padding: const EdgeInsets.symmetric(horizontal: 24),
       decoration: const BoxDecoration(
         color: Color(0x35B8A47A),
         border: Border(
@@ -156,21 +174,20 @@ class WitcherBookFrame extends StatelessWidget {
                         Text(
                           ResumeData.witcherTitle.toUpperCase(),
                           style: WitcherTypography.parchmentHeading.copyWith(
-                            fontSize: isDesktop ? 13.5 : 12,
+                            fontSize: 13.5,
                             fontWeight: FontWeight.w800,
                             letterSpacing: 1.6,
                             color: const Color(0xFF6B1914), // Faded iron-gall crimson
                           ),
                         ),
-                        if (isDesktop)
-                          Text(
-                            "GRANDMASTER OF THE NEURAL SCHOOL",
-                            style: WitcherTypography.parchmentFolio.copyWith(
-                              fontSize: 8.5,
-                              letterSpacing: 1.2,
-                              color: const Color(0xFF5E4D3C),
-                            ),
+                        Text(
+                          "GRANDMASTER OF THE NEURAL SCHOOL",
+                          style: WitcherTypography.parchmentFolio.copyWith(
+                            fontSize: 8.5,
+                            letterSpacing: 1.2,
+                            color: const Color(0xFF5E4D3C),
                           ),
+                        ),
                       ],
                     ),
                   ],
@@ -214,7 +231,7 @@ class WitcherBookFrame extends StatelessWidget {
                 // Audio Toggle
                 _ParchmentUtilityButton(
                   icon: isAudioEnabled ? Icons.volume_up_rounded : Icons.volume_off_rounded,
-                  label: isDesktop ? (isAudioEnabled ? "SOUND" : "MUTED") : null,
+                  label: isAudioEnabled ? "SOUND" : "MUTED",
                   tooltip: "Kaer Morhen & Ard Skellig Ambient Soundtrack",
                   isActive: isAudioEnabled,
                   onTap: onToggleAudio,
@@ -224,7 +241,7 @@ class WitcherBookFrame extends StatelessWidget {
                 // Fullscreen Toggle
                 _ParchmentUtilityButton(
                   icon: isFullscreen ? Icons.fullscreen_exit_rounded : Icons.fullscreen_rounded,
-                  label: isDesktop ? (isFullscreen ? "WINDOW" : "FULL") : null,
+                  label: isFullscreen ? "WINDOW" : "FULL",
                   tooltip: "Toggle Fullscreen View",
                   isActive: isFullscreen,
                   onTap: onToggleFullscreen,
@@ -234,13 +251,148 @@ class WitcherBookFrame extends StatelessWidget {
                 // Dossier Download
                 _ParchmentUtilityButton(
                   icon: Icons.download_rounded,
-                  label: isDesktop ? "DOSSIER" : null,
+                  label: "DOSSIER",
                   tooltip: "Download Resume & AWS ML Engineer Certificate",
                   isActive: true,
                   highlightColor: const Color(0xFF6B1914),
                   onTap: onDownloadDossier,
                 ),
               ],
+            ),
+          ),
+        ],
+      ),
+    );
+  }
+
+  // Responsive 2-Tier Header for Mobile/Phone Browsers
+  Widget _buildMobileHeader(BuildContext context) {
+    return Container(
+      decoration: const BoxDecoration(
+        color: Color(0x35B8A47A),
+        border: Border(
+          bottom: BorderSide(
+            color: Color(0xFFA89168),
+            width: 1.2,
+          ),
+        ),
+      ),
+      child: Column(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          // Tier 1: Wolf Crest + Title (Left) and Quick Utilities (Right)
+          Container(
+            height: 44,
+            padding: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                GestureDetector(
+                  onTap: () {
+                    if (selectedIndex != 0) onTabSelected(0);
+                  },
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: [
+                      Container(
+                        width: 28,
+                        height: 28,
+                        decoration: BoxDecoration(
+                          shape: BoxShape.circle,
+                          color: const Color(0xFF1E150E),
+                          border: Border.all(color: const Color(0xFF8F7026), width: 1.3),
+                          boxShadow: const [
+                            BoxShadow(
+                              color: Color(0x30000000),
+                              blurRadius: 3,
+                              offset: Offset(0, 1),
+                            ),
+                          ],
+                        ),
+                        child: const Center(
+                          child: WitcherMedallion(size: 20, glowing: true),
+                        ),
+                      ),
+                      const SizedBox(width: 8),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            ResumeData.witcherTitle.toUpperCase(),
+                            style: WitcherTypography.parchmentHeading.copyWith(
+                              fontSize: 12,
+                              fontWeight: FontWeight.w800,
+                              letterSpacing: 1.2,
+                              color: const Color(0xFF6B1914),
+                            ),
+                          ),
+                          Text(
+                            "SCHOOL OF THE NEURAL WOLF",
+                            style: WitcherTypography.parchmentFolio.copyWith(
+                              fontSize: 7.5,
+                              letterSpacing: 0.8,
+                              color: const Color(0xFF5E4D3C),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
+                  ),
+                ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    _ParchmentUtilityButton(
+                      icon: isAudioEnabled ? Icons.volume_up_rounded : Icons.volume_off_rounded,
+                      label: isAudioEnabled ? "SOUND" : "MUTED",
+                      tooltip: "Ambient Audio",
+                      isActive: isAudioEnabled,
+                      onTap: onToggleAudio,
+                    ),
+                    const SizedBox(width: 5),
+                    _ParchmentUtilityButton(
+                      icon: Icons.download_rounded,
+                      label: "DOSSIER",
+                      tooltip: "Download Dossier",
+                      isActive: true,
+                      highlightColor: const Color(0xFF6B1914),
+                      onTap: onDownloadDossier,
+                    ),
+                  ],
+                ),
+              ],
+            ),
+          ),
+
+          // Hairline separator
+          Container(
+            height: 1,
+            color: const Color(0x25A89168),
+          ),
+
+          // Tier 2: Horizontally Scrollable Parchment Chapter Ribbons
+          Container(
+            height: 38,
+            padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 3),
+            child: SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              physics: const BouncingScrollPhysics(),
+              child: Row(
+                mainAxisSize: MainAxisSize.min,
+                children: List.generate(tabTitles.length, (index) {
+                  final isSelected = selectedIndex == index;
+                  return _ParchmentTabItem(
+                    title: tabTitles[index],
+                    index: index,
+                    isSelected: isSelected,
+                    isCompact: true,
+                    onTap: () {
+                      if (selectedIndex != index) onTabSelected(index);
+                    },
+                  );
+                }),
+              ),
             ),
           ),
         ],
@@ -254,12 +406,14 @@ class _ParchmentTabItem extends StatefulWidget {
   final String title;
   final int index;
   final bool isSelected;
+  final bool isCompact;
   final VoidCallback onTap;
 
   const _ParchmentTabItem({
     required this.title,
     required this.index,
     required this.isSelected,
+    this.isCompact = false,
     required this.onTap,
   });
 
@@ -275,6 +429,7 @@ class _ParchmentTabItemState extends State<_ParchmentTabItem> {
   @override
   Widget build(BuildContext context) {
     final active = widget.isSelected;
+    final compact = widget.isCompact;
     final roman = widget.index < romanNumerals.length
         ? romanNumerals[widget.index]
         : "${widget.index + 1}";
@@ -287,10 +442,10 @@ class _ParchmentTabItemState extends State<_ParchmentTabItem> {
         onTap: widget.onTap,
         child: AnimatedContainer(
           duration: const Duration(milliseconds: 180),
-          margin: const EdgeInsets.symmetric(horizontal: 4),
+          margin: EdgeInsets.symmetric(horizontal: compact ? 3 : 4),
           padding: EdgeInsets.symmetric(
-            horizontal: active ? 14 : 10,
-            vertical: 6,
+            horizontal: compact ? (active ? 9 : 7) : (active ? 14 : 10),
+            vertical: compact ? 4 : 6,
           ),
           decoration: BoxDecoration(
             color: active
@@ -320,21 +475,21 @@ class _ParchmentTabItemState extends State<_ParchmentTabItem> {
                 "$roman.",
                 style: TextStyle(
                   fontFamily: 'Cinzel',
-                  fontSize: 11,
+                  fontSize: compact ? 10 : 11,
                   fontWeight: FontWeight.w800,
                   color: active
                       ? const Color(0xFF6B1914)
                       : (_isHovered ? const Color(0xFF7A5812) : const Color(0xFF5E4D3C)),
                 ),
               ),
-              const SizedBox(width: 5),
+              SizedBox(width: compact ? 3 : 5),
               Text(
                 widget.title.toUpperCase(),
                 style: TextStyle(
                   fontFamily: 'Cinzel',
-                  fontSize: active ? 11.5 : 11,
+                  fontSize: compact ? (active ? 10 : 9.5) : (active ? 11.5 : 11),
                   fontWeight: active ? FontWeight.w800 : FontWeight.w600,
-                  letterSpacing: 1.4,
+                  letterSpacing: compact ? 0.9 : 1.4,
                   color: active
                       ? const Color(0xFF6B1914)
                       : (_isHovered ? WitcherColors.inkPrimary : const Color(0xFF5E4D3C)),
@@ -514,4 +669,50 @@ class _ExactCenterCreasePainter extends CustomPainter {
 
   @override
   bool shouldRepaint(covariant _ExactCenterCreasePainter oldDelegate) => false;
+}
+
+// Top binding binder with leather stitches & shadow for mobile/phone codex
+class _MobileTopBinderPainter extends CustomPainter {
+  @override
+  void paint(Canvas canvas, Size size) {
+    if (size.width <= 0 || size.height <= 0) return;
+
+    // 1. Top hinge drop shadow cast onto the page leaf
+    final shadowShader = const LinearGradient(
+      begin: Alignment.topCenter,
+      end: Alignment.bottomCenter,
+      colors: [
+        Color(0x551A0D05),
+        Color(0x201A0D05),
+        Colors.transparent,
+      ],
+      stops: [0.0, 0.55, 1.0],
+    ).createShader(Rect.fromLTWH(0, 0, size.width, size.height));
+    canvas.drawRect(Rect.fromLTWH(0, 0, size.width, size.height), Paint()..shader = shadowShader);
+
+    // 2. Leather stitches across the top horizontal fold line
+    final holePaint = Paint()
+      ..color = const Color(0xEE120602)
+      ..style = PaintingStyle.fill;
+    final cordPaint = Paint()
+      ..color = const Color(0xFF3E2815)
+      ..strokeWidth = 2.0
+      ..strokeCap = StrokeCap.round;
+    final highlightPaint = Paint()
+      ..color = const Color(0xFF6B4826)
+      ..strokeWidth = 1.0
+      ..strokeCap = StrokeCap.round;
+
+    final stitchCount = (size.width / 52).clamp(5, 9).toInt();
+    for (int i = 1; i <= stitchCount; i++) {
+      final x = (size.width / (stitchCount + 1)) * i;
+      canvas.drawCircle(Offset(x - 4, 3.5), 1.3, holePaint);
+      canvas.drawCircle(Offset(x + 4, 3.5), 1.3, holePaint);
+      canvas.drawLine(Offset(x - 4, 3.5), Offset(x + 4, 3.5), cordPaint);
+      canvas.drawLine(Offset(x - 3, 3.0), Offset(x + 3, 3.0), highlightPaint);
+    }
+  }
+
+  @override
+  bool shouldRepaint(covariant _MobileTopBinderPainter oldDelegate) => false;
 }

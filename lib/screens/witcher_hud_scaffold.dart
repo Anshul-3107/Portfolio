@@ -174,12 +174,28 @@ class _WitcherHudScaffoldState extends State<WitcherHudScaffold> {
                             builder: (context, constraints) {
                               final isDesktop = constraints.maxWidth > 900;
 
-                              return WitcherPageFlipTransition(
+                              final pageContent = WitcherPageFlipTransition(
                                 currentIndex: _currentTabIndex,
                                 child: KeyedSubtree(
                                   key: ValueKey<int>(_currentTabIndex),
                                   child: _buildActiveSpread(isDesktop),
                                 ),
+                              );
+
+                              if (isDesktop) return pageContent;
+
+                              // Mobile horizontal swipe gesture for fluid page turning
+                              return GestureDetector(
+                                behavior: HitTestBehavior.translucent,
+                                onHorizontalDragEnd: (details) {
+                                  final velocity = details.primaryVelocity ?? 0;
+                                  if (velocity < -280) {
+                                    _nextTab();
+                                  } else if (velocity > 280) {
+                                    _prevTab();
+                                  }
+                                },
+                                child: pageContent,
                               );
                             },
                           ),

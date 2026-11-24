@@ -29,6 +29,8 @@ class WitcherParchmentPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final isMobile = !isLeftPage && !isRightPage;
+
     return Container(
       decoration: WitcherBookTheme.parchmentDecoration(
         isLeftPage: isLeftPage,
@@ -49,10 +51,10 @@ class WitcherParchmentPage extends StatelessWidget {
           // Main page contents with header & footer
           Padding(
             padding: EdgeInsets.only(
-              left: isLeftPage ? 26 : (isRightPage ? 44 : 20),
-              right: isRightPage ? 26 : (isLeftPage ? 44 : 20),
-              top: 12,
-              bottom: 12,
+              left: isLeftPage ? 26 : (isRightPage ? 44 : 12),
+              right: isRightPage ? 26 : (isLeftPage ? 44 : 12),
+              top: isMobile ? 8 : 12,
+              bottom: isMobile ? 8 : 12,
             ),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.stretch,
@@ -293,6 +295,30 @@ class _WeatheredParchmentPainter extends CustomPainter {
         paint: decklePaint,
         fillPaint: deckleFill,
         inwardOffset: -3.5,
+      );
+    } else {
+      // Mobile single leaf: deckled paper borders along both margins
+      _drawDeckledEdge(
+        canvas: canvas,
+        startX: 3,
+        startY: 6,
+        endX: 3,
+        endY: size.height - 6,
+        isVertical: true,
+        paint: decklePaint,
+        fillPaint: deckleFill,
+        inwardOffset: 2.2,
+      );
+      _drawDeckledEdge(
+        canvas: canvas,
+        startX: size.width - 3,
+        startY: 6,
+        endX: size.width - 3,
+        endY: size.height - 6,
+        isVertical: true,
+        paint: decklePaint,
+        fillPaint: deckleFill,
+        inwardOffset: -2.2,
       );
     }
 
